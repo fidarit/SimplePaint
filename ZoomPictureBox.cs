@@ -56,21 +56,25 @@ namespace Wavelet
             get { return image; }
             set
             {
-                image = value;
-
-                if (value == null)
+                if (image != value)
                 {
-                    sourceImageWidth = 0;
-                    sourceImageHeight = 0;
-                    VisibleCenter = new PointF(0, 0);
-                }
-                else if (sourceImageHeight != value.Height || sourceImageWidth != value.Width)
-                {
-                    sourceImageWidth = value.Width;
-                    sourceImageHeight = value.Height;
-                    VisibleCenter = new PointF(sourceImageWidth / 2f, sourceImageHeight / 2f);
+                    image?.Dispose();
+                    image = value;
 
-                    AutoZoom();
+                    if (value == null)
+                    {
+                        sourceImageWidth = 0;
+                        sourceImageHeight = 0;
+                        VisibleCenter = new PointF(0, 0);
+                    }
+                    else if (sourceImageHeight != value.Height || sourceImageWidth != value.Width)
+                    {
+                        sourceImageWidth = value.Width;
+                        sourceImageHeight = value.Height;
+                        VisibleCenter = new PointF(sourceImageWidth / 2f, sourceImageHeight / 2f);
+
+                        AutoZoom();
+                    }
                 }
 
                 Invalidate();

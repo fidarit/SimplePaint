@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LayersIDK
 {
-    public class ImageLayer : Layer
+    public class ImageLayer : LayerBasic
     {
         private Image image;
 
@@ -26,10 +26,9 @@ namespace LayersIDK
 
         public override void Render()
         {
-            ResultImage = ownCanvas.CreateNewBitmap();
-
             using (Graphics graphics = Graphics.FromImage(ResultImage))
             {
+                graphics.Clear(Color.Transparent);
                 graphics.DrawImage(image, Rectangle);
             }
         }

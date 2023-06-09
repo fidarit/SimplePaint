@@ -12,18 +12,45 @@ namespace LayersIDK
     {
         public int Width { get; private set; }
         public int Height { get; private set; }
-        public Bitmap ResultImage { get; protected set; }
 
         public Size Size => new Size(Width, Height);
 
-        public readonly List<Layer> Layers = new List<Layer>();
+        public readonly Bitmap ResultImage;
+        public readonly List<LayerBasic> Layers = new List<LayerBasic>();
 
         public int SelectedLayerIndex = -1;
+
+        private Bitmap preparedBackground;
 
         public Canvas(int width, int height)
         {
             Width = width;
             Height = height;
+            ResultImage = CreateNewBitmap();
+
+            RenderBackground();
+            Render();
+        }
+
+        public LayerBasic GetLayerToDraw()
+        {
+            if (Layers.Count == 0)
+            {
+                SelectedLayerIndex = 0;
+                return new Layer(this);
+            }
+
+            if (SelectedLayerIndex < 0 || SelectedLayerIndex >= Layers.Count)
+                SelectedLayerIndex = 0;
+
+            LayerBasic result = Layers[SelectedLayerIndex];
+            if (result is not Layer)
+            {
+                result = new Layer(this);
+                SelectedLayerIndex = Layers.Count - 1;
+            }
+
+            return result;
         }
 
         public Bitmap CreateNewBitmap()
@@ -33,8 +60,6 @@ namespace LayersIDK
 
         public Bitmap Render(bool force = false)
         {
-            ResultImage = CreateNewBitmap();
-
             if(force)
             {
                 foreach (var layer in Layers)
@@ -43,6 +68,8 @@ namespace LayersIDK
 
             using (Graphics graphics = Graphics.FromImage(ResultImage))
             {
+                graphics.DrawImage(preparedBackground, 0, 0);
+
                 foreach (var layer in Layers)
                 {
                     if(layer.IsEnabled)
@@ -51,6 +78,27 @@ namespace LayersIDK
             }
 
             return ResultImage;
+        }
+
+        private void RenderBackground()
+        {
+            preparedBackground = CreateNewBitmap();
+            int cellSize = 8;
+
+            using (Graphics graphics = Graphics.FromImage(preparedBackground))
+            using (var brushWhite = new SolidBrush(Color.White))
+            using (var brushLightGray = new SolidBrush(Color.LightGray))
+            {
+                for (int y = 0; y < Height; y += cellSize)
+                {
+                    for (int x = 0; x < Width; x += cellSize)
+                    {
+                        Brush brush = (x / cellSize + y / cellSize) % 2 == 0 ? brushWhite : brushLightGray;
+
+                        graphics.FillRectangle(brush, x, y, cellSize, cellSize);
+                    }
+                }
+            }
         }
     }
 }

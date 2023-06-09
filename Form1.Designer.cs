@@ -49,23 +49,28 @@
             openFileToolStripMenuItem = new ToolStripMenuItem();
             saveFileToolStripMenuItem = new ToolStripMenuItem();
             flowLayoutPanel1 = new FlowLayoutPanel();
-            button1 = new Button();
-            button2 = new Button();
-            button3 = new Button();
-            button4 = new Button();
-            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            PencilB = new Button();
+            RectangleB = new Button();
+            RectangleWithRoundedEdgesB = new Button();
+            EllipseB = new Button();
+            LineB = new Button();
+            ColorB = new Button();
+            Colors = new PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(splitContainer1)).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             menuStrip1.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(Colors)).BeginInit();
             SuspendLayout();
             // 
             // splitContainer1
             // 
             splitContainer1.Dock = DockStyle.Fill;
-            splitContainer1.Location = new Point(55, 24);
+            splitContainer1.Location = new System.Drawing.Point(62, 30);
+            splitContainer1.Margin = new Padding(3, 4, 3, 4);
             splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -76,23 +81,29 @@
             // 
             splitContainer1.Panel2.Controls.Add(tableLayoutPanel1);
             splitContainer1.Panel2.Controls.Add(listView1);
-            splitContainer1.Size = new Size(1582, 769);
-            splitContainer1.SplitterDistance = 1186;
+            splitContainer1.Size = new System.Drawing.Size(1809, 1025);
+            splitContainer1.SplitterDistance = 1356;
+            splitContainer1.SplitterWidth = 5;
             splitContainer1.TabIndex = 0;
             // 
             // zoomPictureBox1
             // 
             zoomPictureBox1.Dock = DockStyle.Fill;
-            zoomPictureBox1.Image = (Bitmap)resources.GetObject("zoomPictureBox1.Image");
+            zoomPictureBox1.Image = ((System.Drawing.Bitmap)(resources.GetObject("zoomPictureBox1.Image")));
             zoomPictureBox1.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Bicubic;
             zoomPictureBox1.InterpolationModeZoomOut = System.Drawing.Drawing2D.InterpolationMode.Bilinear;
-            zoomPictureBox1.Location = new Point(0, 0);
+            zoomPictureBox1.Location = new System.Drawing.Point(0, 0);
+            zoomPictureBox1.Margin = new Padding(3, 4, 3, 4);
             zoomPictureBox1.Name = "zoomPictureBox1";
             zoomPictureBox1.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-            zoomPictureBox1.Size = new Size(1186, 769);
+            zoomPictureBox1.Size = new System.Drawing.Size(1356, 1025);
             zoomPictureBox1.TabIndex = 0;
-            zoomPictureBox1.VisibleCenter = (PointF)resources.GetObject("zoomPictureBox1.VisibleCenter");
+            zoomPictureBox1.VisibleCenter = ((System.Drawing.PointF)(resources.GetObject("zoomPictureBox1.VisibleCenter")));
             zoomPictureBox1.Zoom = 150F;
+            zoomPictureBox1.Paint += new PaintEventHandler(zoomPictureBox1_Paint);
+            zoomPictureBox1.MouseDown += new MouseEventHandler(zoomPictureBox1_MouseDown);
+            zoomPictureBox1.MouseMove += new MouseEventHandler(zoomPictureBox1_MouseMove);
+            zoomPictureBox1.MouseUp += new MouseEventHandler(zoomPictureBox1_MouseUp);
             // 
             // tableLayoutPanel1
             // 
@@ -105,73 +116,78 @@
             tableLayoutPanel1.Controls.Add(addImageLayer, 1, 0);
             tableLayoutPanel1.Controls.Add(addLayer, 2, 0);
             tableLayoutPanel1.Dock = DockStyle.Bottom;
-            tableLayoutPanel1.Location = new Point(0, 453);
+            tableLayoutPanel1.Location = new System.Drawing.Point(0, 605);
+            tableLayoutPanel1.Margin = new Padding(3, 4, 3, 4);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Size = new Size(392, 53);
+            tableLayoutPanel1.Size = new System.Drawing.Size(448, 71);
             tableLayoutPanel1.TabIndex = 4;
             // 
             // removeLayer
             // 
             removeLayer.Dock = DockStyle.Fill;
-            removeLayer.Location = new Point(313, 4);
-            removeLayer.Margin = new Padding(4);
+            removeLayer.Location = new System.Drawing.Point(357, 5);
+            removeLayer.Margin = new Padding(5);
             removeLayer.Name = "removeLayer";
-            removeLayer.Size = new Size(75, 45);
+            removeLayer.Size = new System.Drawing.Size(86, 61);
             removeLayer.TabIndex = 1;
             removeLayer.Text = "-";
             removeLayer.UseVisualStyleBackColor = true;
-            removeLayer.Click += removeLayer_Click;
+            removeLayer.Click += new System.EventHandler(removeLayer_Click);
             // 
             // addImageLayer
             // 
             addImageLayer.Dock = DockStyle.Fill;
-            addImageLayer.Location = new Point(132, 4);
-            addImageLayer.Margin = new Padding(4);
+            addImageLayer.Location = new System.Drawing.Point(148, 5);
+            addImageLayer.Margin = new Padding(5);
             addImageLayer.Name = "addImageLayer";
-            addImageLayer.Size = new Size(90, 45);
+            addImageLayer.Size = new System.Drawing.Size(103, 61);
             addImageLayer.TabIndex = 3;
             addImageLayer.Text = "Добавить изображение";
             addImageLayer.UseVisualStyleBackColor = true;
-            addImageLayer.Click += addImageLayer_Click;
+            addImageLayer.Click += new System.EventHandler(addImageLayer_Click);
             // 
             // addLayer
             // 
             addLayer.Dock = DockStyle.Fill;
-            addLayer.Location = new Point(230, 4);
-            addLayer.Margin = new Padding(4);
+            addLayer.Location = new System.Drawing.Point(261, 5);
+            addLayer.Margin = new Padding(5);
             addLayer.Name = "addLayer";
-            addLayer.Size = new Size(75, 45);
+            addLayer.Size = new System.Drawing.Size(86, 61);
             addLayer.TabIndex = 0;
             addLayer.Text = "+";
             addLayer.UseVisualStyleBackColor = true;
-            addLayer.Click += addLayer_Click;
+            addLayer.Click += new System.EventHandler(addLayer_Click);
             // 
             // listView1
             // 
             listView1.AllowDrop = true;
             listView1.AutoArrange = false;
             listView1.CheckBoxes = true;
-            listView1.Columns.AddRange(new ColumnHeader[] { columnHeader1 });
+            listView1.Columns.AddRange(new ColumnHeader[] {
+            columnHeader1});
             listView1.Dock = DockStyle.Bottom;
-            listView1.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
+            listView1.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             listView1.HeaderStyle = ColumnHeaderStyle.None;
             listViewItem1.StateImageIndex = 0;
             listViewItem2.StateImageIndex = 0;
-            listView1.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2 });
+            listView1.Items.AddRange(new ListViewItem[] {
+            listViewItem1,
+            listViewItem2});
             listView1.LabelEdit = true;
             listView1.LabelWrap = false;
-            listView1.Location = new Point(0, 506);
+            listView1.Location = new System.Drawing.Point(0, 676);
+            listView1.Margin = new Padding(3, 4, 3, 4);
             listView1.MultiSelect = false;
             listView1.Name = "listView1";
-            listView1.Size = new Size(392, 263);
+            listView1.Size = new System.Drawing.Size(448, 349);
             listView1.TabIndex = 2;
             listView1.UseCompatibleStateImageBehavior = false;
             listView1.View = View.Details;
-            listView1.AfterLabelEdit += listView1_AfterLabelEdit;
-            listView1.ItemActivate += listView1_ItemActivate;
-            listView1.ItemCheck += listView1_ItemCheck;
+            listView1.AfterLabelEdit += new LabelEditEventHandler(listView1_AfterLabelEdit);
+            listView1.ItemActivate += new System.EventHandler(listView1_ItemActivate);
+            listView1.ItemCheck += new ItemCheckEventHandler(listView1_ItemCheck);
             // 
             // columnHeader1
             // 
@@ -179,112 +195,164 @@
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem });
-            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            menuStrip1.Items.AddRange(new ToolStripItem[] {
+            fileToolStripMenuItem});
+            menuStrip1.Location = new System.Drawing.Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(1637, 24);
+            menuStrip1.Padding = new Padding(7, 3, 0, 3);
+            menuStrip1.Size = new System.Drawing.Size(1871, 30);
             menuStrip1.TabIndex = 4;
             menuStrip1.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { openFileToolStripMenuItem, saveFileToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] {
+            openFileToolStripMenuItem,
+            saveFileToolStripMenuItem});
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            fileToolStripMenuItem.Size = new Size(48, 20);
+            fileToolStripMenuItem.Size = new System.Drawing.Size(59, 24);
             fileToolStripMenuItem.Text = "Файл";
             // 
             // openFileToolStripMenuItem
             // 
             openFileToolStripMenuItem.Name = "openFileToolStripMenuItem";
-            openFileToolStripMenuItem.Size = new Size(133, 22);
+            openFileToolStripMenuItem.Size = new System.Drawing.Size(166, 26);
             openFileToolStripMenuItem.Text = "Открыть";
-            openFileToolStripMenuItem.Click += openFileToolStripMenuItem_Click;
+            openFileToolStripMenuItem.Click += new System.EventHandler(openFileToolStripMenuItem_Click);
             // 
             // saveFileToolStripMenuItem
             // 
             saveFileToolStripMenuItem.Name = "saveFileToolStripMenuItem";
-            saveFileToolStripMenuItem.Size = new Size(133, 22);
+            saveFileToolStripMenuItem.Size = new System.Drawing.Size(166, 26);
             saveFileToolStripMenuItem.Text = "Сохранить";
-            saveFileToolStripMenuItem.Click += saveFileToolStripMenuItem_Click;
+            saveFileToolStripMenuItem.Click += new System.EventHandler(saveFileToolStripMenuItem_Click);
             // 
             // flowLayoutPanel1
             // 
             flowLayoutPanel1.AutoSize = true;
-            flowLayoutPanel1.Controls.Add(button1);
-            flowLayoutPanel1.Controls.Add(button2);
-            flowLayoutPanel1.Controls.Add(button3);
-            flowLayoutPanel1.Controls.Add(button4);
+            flowLayoutPanel1.Controls.Add(PencilB);
+            flowLayoutPanel1.Controls.Add(RectangleB);
+            flowLayoutPanel1.Controls.Add(RectangleWithRoundedEdgesB);
+            flowLayoutPanel1.Controls.Add(EllipseB);
+            flowLayoutPanel1.Controls.Add(LineB);
+            flowLayoutPanel1.Controls.Add(ColorB);
+            flowLayoutPanel1.Controls.Add(Colors);
             flowLayoutPanel1.Dock = DockStyle.Left;
             flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
-            flowLayoutPanel1.Location = new Point(0, 24);
+            flowLayoutPanel1.Location = new System.Drawing.Point(0, 30);
+            flowLayoutPanel1.Margin = new Padding(3, 4, 3, 4);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(55, 769);
+            flowLayoutPanel1.Size = new System.Drawing.Size(62, 1025);
             flowLayoutPanel1.TabIndex = 5;
             flowLayoutPanel1.WrapContents = false;
             // 
-            // button1
+            // PencilB
             // 
-            button1.AutoSize = true;
-            button1.Location = new Point(3, 3);
-            button1.Name = "button1";
-            button1.Size = new Size(49, 45);
-            button1.TabIndex = 5;
-            button1.Text = "*";
-            button1.UseVisualStyleBackColor = true;
+            PencilB.AutoSize = true;
+            PencilB.Location = new System.Drawing.Point(3, 4);
+            PencilB.Margin = new Padding(3, 4, 3, 4);
+            PencilB.Name = "PencilB";
+            PencilB.Size = new System.Drawing.Size(56, 60);
+            PencilB.TabIndex = 5;
+            PencilB.Text = "Кр";
+            PencilB.UseVisualStyleBackColor = true;
+            PencilB.Click += new System.EventHandler(PencilB_Click);
             // 
-            // button2
+            // RectangleB
             // 
-            button2.AutoSize = true;
-            button2.Location = new Point(3, 54);
-            button2.Name = "button2";
-            button2.Size = new Size(49, 45);
-            button2.TabIndex = 6;
-            button2.Text = "*";
-            button2.UseVisualStyleBackColor = true;
+            RectangleB.AutoSize = true;
+            RectangleB.Location = new System.Drawing.Point(3, 72);
+            RectangleB.Margin = new Padding(3, 4, 3, 4);
+            RectangleB.Name = "RectangleB";
+            RectangleB.Size = new System.Drawing.Size(56, 60);
+            RectangleB.TabIndex = 6;
+            RectangleB.Text = "Пр";
+            RectangleB.UseVisualStyleBackColor = true;
+            RectangleB.Click += new System.EventHandler(RectangleB_Click);
             // 
-            // button3
+            // RectangleWithRoundedEdgesB
             // 
-            button3.AutoSize = true;
-            button3.Location = new Point(3, 105);
-            button3.Name = "button3";
-            button3.Size = new Size(49, 45);
-            button3.TabIndex = 7;
-            button3.Text = "*";
-            button3.UseVisualStyleBackColor = true;
+            RectangleWithRoundedEdgesB.AutoSize = true;
+            RectangleWithRoundedEdgesB.Location = new System.Drawing.Point(3, 140);
+            RectangleWithRoundedEdgesB.Margin = new Padding(3, 4, 3, 4);
+            RectangleWithRoundedEdgesB.Name = "RectangleWithRoundedEdgesB";
+            RectangleWithRoundedEdgesB.Size = new System.Drawing.Size(56, 60);
+            RectangleWithRoundedEdgesB.TabIndex = 7;
+            RectangleWithRoundedEdgesB.Text = "ПЗК";
+            RectangleWithRoundedEdgesB.UseVisualStyleBackColor = true;
+            RectangleWithRoundedEdgesB.Click += new System.EventHandler(RectangleWithRoundedEdgesB_Click);
             // 
-            // button4
+            // EllipseB
             // 
-            button4.AutoSize = true;
-            button4.Location = new Point(3, 156);
-            button4.Name = "button4";
-            button4.Size = new Size(49, 45);
-            button4.TabIndex = 8;
-            button4.Text = "*";
-            button4.UseVisualStyleBackColor = true;
+            EllipseB.AutoSize = true;
+            EllipseB.Location = new System.Drawing.Point(3, 208);
+            EllipseB.Margin = new Padding(3, 4, 3, 4);
+            EllipseB.Name = "EllipseB";
+            EllipseB.Size = new System.Drawing.Size(56, 60);
+            EllipseB.TabIndex = 8;
+            EllipseB.Text = "Элл";
+            EllipseB.UseVisualStyleBackColor = true;
+            EllipseB.Click += new System.EventHandler(EllipseB_Click);
+            // 
+            // LineB
+            // 
+            LineB.AutoSize = true;
+            LineB.Location = new System.Drawing.Point(3, 276);
+            LineB.Margin = new Padding(3, 4, 3, 4);
+            LineB.Name = "LineB";
+            LineB.Size = new System.Drawing.Size(56, 60);
+            LineB.TabIndex = 9;
+            LineB.Text = "Лин";
+            LineB.UseVisualStyleBackColor = true;
+            LineB.Click += new System.EventHandler(LineB_Click);
+            // 
+            // ColorB
+            // 
+            ColorB.AutoSize = true;
+            ColorB.Location = new System.Drawing.Point(3, 344);
+            ColorB.Margin = new Padding(3, 4, 3, 4);
+            ColorB.Name = "ColorB";
+            ColorB.Size = new System.Drawing.Size(56, 60);
+            ColorB.TabIndex = 10;
+            ColorB.Text = "Цвет";
+            ColorB.UseVisualStyleBackColor = true;
+            ColorB.Click += new System.EventHandler(ColorB_Click);
+            // 
+            // Colors
+            // 
+            Colors.Location = new System.Drawing.Point(3, 411);
+            Colors.Name = "Colors";
+            Colors.Size = new System.Drawing.Size(56, 53);
+            Colors.TabIndex = 11;
+            Colors.TabStop = false;
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1637, 793);
+            ClientSize = new System.Drawing.Size(1871, 1055);
             Controls.Add(splitContainer1);
             Controls.Add(flowLayoutPanel1);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
+            Margin = new Padding(3, 4, 3, 4);
             Name = "Form1";
             Text = "Form1";
-            Paint += Form1_Paint;
+            Paint += new PaintEventHandler(Form1_Paint);
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(splitContainer1)).EndInit();
             splitContainer1.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             flowLayoutPanel1.ResumeLayout(false);
             flowLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(Colors)).EndInit();
             ResumeLayout(false);
             PerformLayout();
+
         }
 
         #endregion
@@ -302,9 +370,12 @@
         private TableLayoutPanel tableLayoutPanel1;
         private ColumnHeader columnHeader1;
         private FlowLayoutPanel flowLayoutPanel1;
-        private Button button1;
-        private Button button2;
-        private Button button3;
-        private Button button4;
+        private Button PencilB;
+        private Button RectangleB;
+        private Button RectangleWithRoundedEdgesB;
+        private Button EllipseB;
+        private Button LineB;
+        private Button ColorB;
+        private PictureBox Colors;
     }
 }
