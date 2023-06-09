@@ -140,7 +140,7 @@ namespace Wavelet
             base.OnMouseDown(e);
 
             if (AllowUserDrag)
-                if (e.Button == MouseButtons.Left)
+                if (e.Button == MouseButtons.Left || e.Button == MouseButtons.Middle)
                 {
                     Cursor = Cursors.SizeAll;
                     mouseState = MouseState.Drag;

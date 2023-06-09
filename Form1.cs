@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing.Drawing2D;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Windows.Forms;
 
 namespace LayersIDK
@@ -27,7 +28,6 @@ namespace LayersIDK
         Pen pen = new Pen(Color.Black, 1); //карандаш
         Pen erase = new Pen(Color.White, 10); //ластик
         Tools tools = Tools.None;
-        ColorDialog cd = new ColorDialog();
 
         public Form1()
         {
@@ -169,6 +169,11 @@ namespace LayersIDK
             tools = Tools.Pen;
         }
 
+        private void EraseB_Click(object sender, EventArgs e)
+        {
+            tools = Tools.Erase;
+        }
+
         private void RectangleB_Click(object sender, EventArgs e)
         {
             tools = Tools.Rect;
@@ -191,15 +196,26 @@ namespace LayersIDK
 
         private void ColorB_Click(object sender, EventArgs e)
         {
-            cd.ShowDialog();
-            Colors.BackColor = cd.Color;
-            pen.Color = cd.Color;
+            ColorDialog colorDialog = new ColorDialog();
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                Colors.BackColor = colorDialog.Color;
+                pen.Color = colorDialog.Color;
+            }
         }
 
         private void zoomPictureBox1_Paint(object sender, PaintEventArgs e)
         {
-            if (!paint || paint)
+            if (!paint)
                 return;
+
+            Redraw();
+
+            if (gTarget != Canvas.ResultImage)
+            {
+                g?.Dispose();
+                g = Graphics.FromImage(Canvas.ResultImage);
+            }
 
             int width = Math.Abs(newPoint.X - oldPoint.X);
             int height = Math.Abs(newPoint.Y - oldPoint.Y);
@@ -218,8 +234,6 @@ namespace LayersIDK
 
             else if (tools == Tools.Line)
                 DrawLine(pen, oldPoint, newPoint);
-
-            Redraw();
         }
 
         private void zoomPictureBox1_MouseDown(object sender, MouseEventArgs e)
@@ -227,9 +241,18 @@ namespace LayersIDK
             if (tools == Tools.None)
                 return;
 
-            zoomPictureBox1.AllowUserDrag = false;
-            paint = true;
-            oldPoint = zoomPictureBox1.ClientToImagePoint(e.Location);
+            if (e.Button == MouseButtons.Middle)
+                zoomPictureBox1.AllowUserDrag = true;
+
+            else
+            {
+                if (Canvas.GetLayerToDraw() == null)
+                    return;
+
+                zoomPictureBox1.AllowUserDrag = false;
+                paint = true;
+                oldPoint = zoomPictureBox1.ClientToImagePoint(e.Location);
+            }
         }
 
         private void zoomPictureBox1_MouseMove(object sender, MouseEventArgs e)
@@ -245,32 +268,29 @@ namespace LayersIDK
             }
 
             newPoint = zoomPictureBox1.ClientToImagePoint(e.Location);
-            bool changed = true;
+            bool changed = false;
 
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left && paint)
             {
-                if (paint)
+                if (tools == Tools.Pen)
                 {
-                    if (tools == Tools.Pen)
-                    {
-                        DrawLine(pen, newPoint, oldPoint);
-                        oldPoint = newPoint;
-                    }
-                    else if (tools == Tools.Erase)
-                    {
-                        DrawLine(erase, newPoint, oldPoint);
-                        oldPoint = newPoint;
-                    }
+                    DrawLine(pen, newPoint, oldPoint);
+                    oldPoint = newPoint;
+                    changed = true;
+                }
+                else if (tools == Tools.Erase)
+                {
+                    DrawLine(erase, newPoint, oldPoint);
+                    oldPoint = newPoint;
+                    changed = true;
                 }
             }
-
             else if (e.Button == MouseButtons.Right)
             {
                 DrawLine(erase, newPoint, oldPoint);
                 oldPoint = newPoint;
+                changed = true;
             }
-            else
-                changed = false;
 
             if (changed)
                 Redraw();
@@ -278,7 +298,11 @@ namespace LayersIDK
 
         private void zoomPictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
-            zoomPictureBox1.AllowUserDrag = true;
+            if(e.Button == MouseButtons.Middle && paint)
+                zoomPictureBox1.AllowUserDrag = false;
+            else
+                zoomPictureBox1.AllowUserDrag = true;
+
             paint = false;
 
             int width = Math.Abs(newPoint.X - oldPoint.X);
