@@ -32,5 +32,11 @@ namespace LayersIDK
                 graphics.DrawImage(image, Rectangle);
             }
         }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            image.Dispose();
+        }
     }
 }

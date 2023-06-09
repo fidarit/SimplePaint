@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LayersIDK
 {
-    public abstract class LayerBasic
+    public abstract class LayerBasic : IDisposable
     {
         protected readonly Canvas ownCanvas;
 
@@ -21,7 +21,7 @@ namespace LayersIDK
         {
             this.ownCanvas = ownCanvas;
             if (!ownCanvas.Layers.Contains(this))
-                ownCanvas.Layers.Add(this);
+                ownCanvas.AddLayer(this);
 
             ResultImage = ownCanvas.CreateNewBitmap();
         }
@@ -35,5 +35,10 @@ namespace LayersIDK
         }
 
         public virtual void Render() { }
+
+        public virtual void Dispose()
+        {
+            ResultImage?.Dispose();
+        }
     }
 }

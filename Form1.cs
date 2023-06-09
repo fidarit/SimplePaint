@@ -1,18 +1,32 @@
-﻿using System.Drawing.Drawing2D;
+﻿using System;
+using System.Drawing.Drawing2D;
+using System.Reflection;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace LayersIDK
 {
+    enum Tools
+    {
+        None,
+        Pen,
+        Erase,
+        Rect,
+        RoundedRect,
+        Ellipse,
+        Line
+    }
+
     public partial class Form1 : Form
     {
         public Canvas Canvas { get; set; }
+
+        Bitmap gTarget;
         Graphics g;
         bool paint = false; //событие рисования
         Point newPoint, oldPoint; //координаты карандаша, ластика
-        Pen p = new Pen(Color.Black, 1); //карандаш
+        Pen pen = new Pen(Color.Black, 1); //карандаш
         Pen erase = new Pen(Color.White, 10); //ластик
-        int index; //инстурменты
+        Tools tools = Tools.None;
         ColorDialog cd = new ColorDialog();
 
         public Form1()
@@ -24,18 +38,23 @@ namespace LayersIDK
 
         private void DrawLine(Pen pen, Point from, Point to)
         {
-            DrawPoint(pen, from);
-            DrawPoint(pen, to);
+            if (pen.Width > 2)
+            {
+                DrawPoint(pen, from);
+                DrawPoint(pen, to);
+            }
             g.DrawLine(pen, from, to);
         }
         private void DrawPoint(Pen pen, Point point)
         {
-            Brush brush = new SolidBrush(pen.Color);
-            int radius = (int)(pen.Width / 2);
-            int size = radius * 2;
-            int x = point.X - radius;
-            int y = point.Y - radius;
-            g.FillEllipse(brush, x, y, size, size);
+            using (Brush brush = new SolidBrush(pen.Color))
+            {
+                int radius = (int)(pen.Width / 2);
+                int size = radius * 2;
+                int x = point.X - radius;
+                int y = point.Y - radius;
+                g.FillEllipse(brush, x, y, size, size);
+            }
         }
 
 
@@ -105,7 +124,7 @@ namespace LayersIDK
 
             if (Canvas.Layers.Count > 0 && index < Canvas.Layers.Count && index >= 0)
             {
-                Canvas.Layers.RemoveAt(index);
+                Canvas.RemoveLayer(index);
                 Redraw();
             }
         }
@@ -145,63 +164,69 @@ namespace LayersIDK
             }
         }
 
+        private void PencilB_Click(object sender, EventArgs e)
+        {
+            tools = Tools.Pen;
+        }
+
         private void RectangleB_Click(object sender, EventArgs e)
         {
-            index = 2;
+            tools = Tools.Rect;
         }
 
         private void RectangleWithRoundedEdgesB_Click(object sender, EventArgs e)
         {
-            index = 3;
+            tools = Tools.RoundedRect;
         }
 
         private void EllipseB_Click(object sender, EventArgs e)
         {
-            index = 4;
+            tools = Tools.Ellipse;
         }
 
         private void LineB_Click(object sender, EventArgs e)
         {
-            index = 5;
+            tools = Tools.Line;
         }
 
         private void ColorB_Click(object sender, EventArgs e)
         {
             cd.ShowDialog();
             Colors.BackColor = cd.Color;
-            p.Color = cd.Color;
+            pen.Color = cd.Color;
         }
 
         private void zoomPictureBox1_Paint(object sender, PaintEventArgs e)
         {
-            if (paint)
-            {
-                int width = Math.Abs(newPoint.X - oldPoint.X);
-                int height = Math.Abs(newPoint.Y - oldPoint.Y);
+            if (!paint || paint)
+                return;
 
-                int x = Math.Min(newPoint.X, oldPoint.X);
-                int y = Math.Min(newPoint.Y, oldPoint.Y);
+            int width = Math.Abs(newPoint.X - oldPoint.X);
+            int height = Math.Abs(newPoint.Y - oldPoint.Y);
 
-                if (index == 2)
-                {
-                    g.DrawEllipse(p, x, y, width, height);
-                }
+            int x = Math.Min(newPoint.X, oldPoint.X);
+            int y = Math.Min(newPoint.Y, oldPoint.Y);
 
-                else if (index == 3)
-                {
-                    g.DrawRectangle(p, x, y, width, height);
-                }
+            if (tools == Tools.Ellipse)
+                g.DrawEllipse(pen, x, y, width, height);
 
-                else if (index == 4)
-                {
-                    g.DrawLine(p, oldPoint, newPoint);
-                }
-            }
+            else if (tools == Tools.Rect)
+                g.DrawRectangle(pen, x, y, width, height);
 
+            else if (tools == Tools.RoundedRect)
+                g.DrawRectangle(pen, x, y, width, height);
+
+            else if (tools == Tools.Line)
+                DrawLine(pen, oldPoint, newPoint);
+
+            Redraw();
         }
 
         private void zoomPictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
+            if (tools == Tools.None)
+                return;
+
             zoomPictureBox1.AllowUserDrag = false;
             paint = true;
             oldPoint = zoomPictureBox1.ClientToImagePoint(e.Location);
@@ -213,8 +238,12 @@ namespace LayersIDK
             if (layer == null)
                 return;
 
-            g?.Dispose();
-            g = Graphics.FromImage(layer.ResultImage);
+            if (gTarget != layer.ResultImage)
+            {
+                g?.Dispose();
+                g = Graphics.FromImage(layer.ResultImage);
+            }
+
             newPoint = zoomPictureBox1.ClientToImagePoint(e.Location);
             bool changed = true;
 
@@ -222,15 +251,14 @@ namespace LayersIDK
             {
                 if (paint)
                 {
-                    if (index == 1)
+                    if (tools == Tools.Pen)
                     {
-                        g.DrawLine(p, newPoint, oldPoint);
+                        DrawLine(pen, newPoint, oldPoint);
                         oldPoint = newPoint;
                     }
-
-                    if (index == 2)
+                    else if (tools == Tools.Erase)
                     {
-                        g.DrawLine(erase, newPoint, oldPoint);
+                        DrawLine(erase, newPoint, oldPoint);
                         oldPoint = newPoint;
                     }
                 }
@@ -238,7 +266,7 @@ namespace LayersIDK
 
             else if (e.Button == MouseButtons.Right)
             {
-                g.DrawLine(erase, newPoint, oldPoint);
+                DrawLine(erase, newPoint, oldPoint);
                 oldPoint = newPoint;
             }
             else
@@ -250,6 +278,7 @@ namespace LayersIDK
 
         private void zoomPictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
+            zoomPictureBox1.AllowUserDrag = true;
             paint = false;
 
             int width = Math.Abs(newPoint.X - oldPoint.X);
@@ -258,24 +287,19 @@ namespace LayersIDK
             int x = Math.Min(newPoint.X, oldPoint.X);
             int y = Math.Min(newPoint.Y, oldPoint.Y);
 
-            if (index == 1)
-            {
-            }
-            if (index == 2)
-            {
-                g.DrawEllipse(p, x, y, width, height);
-            }
+            if (tools == Tools.Ellipse)
+                g.DrawEllipse(pen, x, y, width, height);
 
-            else if (index == 3)
-            {
-                g.DrawRectangle(p, x, y, width, height);
-            }
+            else if (tools == Tools.Rect)
+                g.DrawRectangle(pen, x, y, width, height);
 
-            else if (index == 4)
-            {
-                g.DrawLine(p, oldPoint, newPoint);
-            }
-            zoomPictureBox1.AllowUserDrag = true;
+            else if (tools == Tools.RoundedRect)
+                g.DrawRectangle(pen, x, y, width, height);
+
+            else if (tools == Tools.Line)
+                DrawLine(pen, oldPoint, newPoint);
+
+            Redraw();
         }
 
         private void listView1_ItemActivate(object sender, EventArgs e)
@@ -309,11 +333,6 @@ namespace LayersIDK
             {
                 Canvas.Layers[e.Item].Name = e.Label;
             }
-        }
-
-        private void PencilB_Click(object sender, EventArgs e)
-        {
-            index = 1;
         }
     }
 }

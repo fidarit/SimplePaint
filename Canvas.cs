@@ -14,13 +14,14 @@ namespace LayersIDK
         public int Height { get; private set; }
 
         public Size Size => new Size(Width, Height);
+        public IReadOnlyList<LayerBasic> Layers => layers;
 
         public readonly Bitmap ResultImage;
-        public readonly List<LayerBasic> Layers = new List<LayerBasic>();
 
         public int SelectedLayerIndex = -1;
 
         private Bitmap preparedBackground;
+        private readonly List<LayerBasic> layers = new List<LayerBasic>();
 
         public Canvas(int width, int height)
         {
@@ -30,6 +31,17 @@ namespace LayersIDK
 
             RenderBackground();
             Render();
+        }
+
+        public void AddLayer(LayerBasic layer)
+        {
+            layers.Add(layer);
+        }
+
+        public void RemoveLayer(int index)
+        {
+            layers[index].Dispose();
+            layers.RemoveAt(index);
         }
 
         public LayerBasic GetLayerToDraw()
