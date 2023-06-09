@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace LayersIDK
     {
         public int Width { get; private set; }
         public int Height { get; private set; }
+        public Bitmap ResultImage { get; protected set; }
 
         public Size Size => new Size(Width, Height);
 
@@ -24,23 +26,31 @@ namespace LayersIDK
             Height = height;
         }
 
-        public Bitmap Draw()
+        public Bitmap CreateNewBitmap()
         {
-            Bitmap result = new Bitmap(Width, Height);
+            return new Bitmap(Width, Height, PixelFormat.Format32bppArgb);
+        }
 
-            using (Graphics graphics = Graphics.FromImage(result))
+        public Bitmap Render(bool force = false)
+        {
+            ResultImage = CreateNewBitmap();
+
+            if(force)
+            {
+                foreach (var layer in Layers)
+                    layer.Render();
+            }
+
+            using (Graphics graphics = Graphics.FromImage(ResultImage))
             {
                 foreach (var layer in Layers)
                 {
                     if(layer.IsEnabled)
-                    {
-                        var layerBitmap = layer.Draw();
-                        graphics.DrawImage(layerBitmap, layer.Rectangle);
-                    }
+                        graphics.DrawImage(layer.ResultImage, 0, 0);
                 }
             }
 
-            return result;
+            return ResultImage;
         }
     }
 }

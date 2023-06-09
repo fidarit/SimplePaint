@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,12 +9,12 @@ namespace LayersIDK
 {
     public class Layer
     {
-        private readonly Canvas ownCanvas;
+        protected readonly Canvas ownCanvas;
 
         public string Name = "Слой";
         public bool IsEnabled = true;
 
-        public Rectangle Rectangle { get; protected set; }
+        public Bitmap ResultImage { get; protected set; }
 
 
         public Layer(Canvas ownCanvas)
@@ -22,12 +23,17 @@ namespace LayersIDK
             if (!ownCanvas.Layers.Contains(this))
                 ownCanvas.Layers.Add(this);
 
-            Rectangle = new Rectangle(Point.Empty, ownCanvas.Size);
+            ResultImage = ownCanvas.CreateNewBitmap();
         }
 
-        public virtual Bitmap Draw()
+        public Layer(Layer layer)
         {
-            return new Bitmap(Rectangle.Width, Rectangle.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            ownCanvas = layer.ownCanvas;
+            Name = layer.Name;
+            IsEnabled = layer.IsEnabled;
+            ResultImage = layer.ResultImage;
         }
+
+        public virtual void Render() { }
     }
 }

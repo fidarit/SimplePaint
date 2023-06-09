@@ -21,7 +21,7 @@ namespace LayersIDK
 
         public void Redraw()
         {
-            zoomPictureBox1.Image = Canvas.Draw();
+            zoomPictureBox1.Image = Canvas.Render(true);
 
             int width = 64;
             int height = width * Canvas.Height / Canvas.Width;
@@ -30,7 +30,7 @@ namespace LayersIDK
             imageList.ImageSize = new Size(width, height);
             foreach (var layer in Canvas.Layers)
             {
-                imageList.Images.Add(layer.Draw());
+                imageList.Images.Add(layer.ResultImage);
             }
 
             listView1.SmallImageList = imageList;
@@ -115,8 +115,7 @@ namespace LayersIDK
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                var bitmap = Canvas.Draw();
-                bitmap.Save(saveFileDialog.FileName);
+                Canvas.ResultImage.Save(saveFileDialog.FileName);
             }
         }
 
@@ -149,11 +148,6 @@ namespace LayersIDK
             {
                 Canvas.Layers[e.Item].Name = e.Label;
             }
-        }
-
-        private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
         }
     }
 }
