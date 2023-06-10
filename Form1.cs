@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Windows.Forms;
@@ -160,7 +161,12 @@ namespace LayersIDK
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                Canvas.ResultImage.Save(saveFileDialog.FileName);
+                string extension = Path.GetExtension(saveFileDialog.FileName).ToLower();
+                if(extension == ".jpg" || extension == ".jpeg")
+                    Canvas.FinalRender().Save(saveFileDialog.FileName, ImageFormat.Jpeg);
+
+                else
+                    Canvas.FinalRender().Save(saveFileDialog.FileName);
             }
         }
 

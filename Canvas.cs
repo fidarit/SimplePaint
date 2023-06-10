@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
@@ -81,6 +82,28 @@ namespace LayersIDK
             using (Graphics graphics = Graphics.FromImage(ResultImage))
             {
                 graphics.DrawImage(preparedBackground, 0, 0);
+
+                foreach (var layer in Layers)
+                {
+                    if(layer.IsEnabled)
+                        graphics.DrawImage(layer.ResultImage, 0, 0);
+                }
+            }
+
+            return ResultImage;
+        }
+        
+        public Bitmap FinalRender()
+        {
+            foreach (var layer in Layers)
+                layer.Render();
+
+            using (Graphics graphics = Graphics.FromImage(ResultImage))
+            {
+                graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                graphics.SmoothingMode = SmoothingMode.HighQuality;
+                graphics.Clear(Color.Transparent);
 
                 foreach (var layer in Layers)
                 {

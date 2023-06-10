@@ -53,7 +53,7 @@ namespace Wavelet
         [DefaultValue(null)]
         public Bitmap Image
         {
-            get { return image; }
+            get => image;
             set
             {
                 if (image != value)
@@ -84,11 +84,7 @@ namespace Wavelet
         [DefaultValue(1f)]
         public float Zoom
         {
-            get
-            {
-                return zoom;
-            }
-
+            get => zoom;
             set
             {
                 zoom = Math.Clamp(value, MinZoom, MaxZoom);
@@ -98,11 +94,7 @@ namespace Wavelet
 
         public PointF VisibleCenter
         {
-            get
-            {
-                return visibleCenter;
-            }
-
+            get => visibleCenter;
             set
             {
                 visibleCenter = value;
@@ -112,8 +104,7 @@ namespace Wavelet
 
         public virtual void OnVisibleCenterChanged()
         {
-            if (VisibleCenterChanged != null)
-                VisibleCenterChanged(this, EventArgs.Empty);
+            VisibleCenterChanged?.Invoke(this, EventArgs.Empty);
 
             Invalidate();
         }
