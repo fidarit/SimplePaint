@@ -27,7 +27,7 @@ namespace LayersIDK
         bool paint = false; //событие рисования
         Point newPoint, oldPoint; //координаты карандаша, ластика
         Pen pen = new Pen(Color.Black, 1); //карандаш
-        Pen erase = new Pen(Color.White, 10); //ластик
+        Pen erase = new Pen(Color.Transparent, 10); //ластик
         Tools tools = Tools.None;
 
         public Form1()
@@ -45,6 +45,18 @@ namespace LayersIDK
             };
         }
 
+        private void Erase(Point from, Point to)
+        {
+            var mode = g.CompositingMode;
+            g.CompositingMode = CompositingMode.SourceCopy;
+
+            DrawPoint(erase, from);
+            DrawPoint(erase, to);
+            g.DrawLine(erase, from, to);
+
+            g.CompositingMode = mode;
+        }
+        
         private void DrawLine(Pen pen, Point from, Point to)
         {
             if (pen.Width > 2)
@@ -54,6 +66,7 @@ namespace LayersIDK
             }
             g.DrawLine(pen, from, to);
         }
+
         private void DrawPoint(Pen pen, Point point)
         {
             using (Brush brush = new SolidBrush(pen.Color))
@@ -291,14 +304,14 @@ namespace LayersIDK
                 }
                 else if (tools == Tools.Erase)
                 {
-                    DrawLine(erase, newPoint, oldPoint);
+                    Erase(newPoint, oldPoint);
                     oldPoint = newPoint;
                     changed = true;
                 }
             }
             else if (e.Button == MouseButtons.Right)
             {
-                DrawLine(erase, newPoint, oldPoint);
+                Erase(newPoint, oldPoint);
                 oldPoint = newPoint;
                 changed = true;
             }
