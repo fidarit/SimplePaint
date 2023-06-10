@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -84,23 +85,58 @@ namespace LayersIDK
 
         public Bitmap Render(bool force = false)
         {
-            if(force)
+            if (force)
                 GetSelectedLayer()?.Render();
 
-            using (Graphics graphics = Graphics.FromImage(ResultImage))
-            {
-                graphics.DrawImageUnscaled(preparedBackground, 0, 0);
+            var bitmaps = new List<Bitmap> { preparedBackground };
 
-                foreach (var layer in Layers)
-                {
-                    if (layer.IsEnabled)
-                        graphics.DrawImageUnscaled(layer.ResultImage, 0, 0);
-                }
+            foreach (var layer in Layers)
+            {
+                if (layer.IsEnabled)
+                    bitmaps.Add(layer.ResultImage);
             }
 
-            return ResultImage;
+            return MergeBitmaps(bitmaps);
         }
-        
+
+        private Bitmap MergeBitmaps(List<Bitmap> bitmaps)
+        {
+            for (int i = 0; i < bitmaps.Count; i++)
+                bitmaps[i] = (Bitmap)bitmaps[i].Clone();
+
+            while (bitmaps.Count > 1)
+            {
+                var mergedBitmaps = new ConcurrentDictionary<int, Bitmap>();
+
+                Parallel.For(0, bitmaps.Count / 2, i =>
+                {
+                    mergedBitmaps[i] = MergeTwoBitmaps(bitmaps[i * 2], bitmaps[i * 2 + 1]);
+                });
+
+                if (bitmaps.Count % 2 != 0)
+                    mergedBitmaps[bitmaps.Count / 2] = bitmaps.Last();
+
+                bitmaps = mergedBitmaps.Values.ToList();
+            }
+
+            return bitmaps.First();
+        }
+
+        private Bitmap MergeTwoBitmaps(Bitmap bitmap1, Bitmap bitmap2)
+        {
+            Bitmap mergedBitmap = (Bitmap)bitmap1.Clone();
+
+            using (Graphics graphics = Graphics.FromImage(mergedBitmap))
+            {
+                graphics.DrawImageUnscaled(bitmap2, 0, 0);
+            }
+
+            bitmap1.Dispose();
+            bitmap2.Dispose();
+
+            return mergedBitmap;
+        }
+
         public Bitmap FinalRender()
         {
             foreach (var layer in Layers)
