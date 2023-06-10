@@ -20,10 +20,10 @@ namespace LayersIDK
         public LayerBasic(Canvas ownCanvas)
         {
             this.ownCanvas = ownCanvas;
+            ResultImage = ownCanvas.CreateNewBitmap();
+
             if (!ownCanvas.Layers.Contains(this))
                 ownCanvas.AddLayer(this);
-
-            ResultImage = ownCanvas.CreateNewBitmap();
         }
 
         public LayerBasic(LayerBasic layer)

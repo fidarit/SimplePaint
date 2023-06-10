@@ -161,7 +161,6 @@
             // 
             // listView1
             // 
-            listView1.AllowDrop = true;
             listView1.AutoArrange = false;
             listView1.CheckBoxes = true;
             listView1.Columns.AddRange(new ColumnHeader[] { columnHeader1 });
@@ -342,7 +341,6 @@
             MainMenuStrip = menuStrip1;
             Name = "Form1";
             Text = "Form1";
-            Paint += Form1_Paint;
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();

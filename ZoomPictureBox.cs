@@ -156,7 +156,11 @@ namespace Wavelet
             {
                 var dx = e.Location.X - startDragged.X;
                 var dy = e.Location.Y - startDragged.Y;
-                VisibleCenter = new PointF(startDraggedVisibleCenter.X - dx / zoom, startDraggedVisibleCenter.Y - dy / zoom);
+
+                var newX = Math.Clamp(startDraggedVisibleCenter.X - dx / zoom, 0f, sourceImageWidth);
+                var newY = Math.Clamp(startDraggedVisibleCenter.Y - dy / zoom, 0f, sourceImageHeight);
+
+                VisibleCenter = new PointF(newX, newY);
             }
         }
 

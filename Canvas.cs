@@ -13,13 +13,14 @@ namespace LayersIDK
     {
         public int Width { get; private set; }
         public int Height { get; private set; }
+        public int SelectedLayerIndex { get; private set; } = -1;
 
         public Size Size => new Size(Width, Height);
         public IReadOnlyList<LayerBasic> Layers => layers;
 
         public readonly Bitmap ResultImage;
 
-        public int SelectedLayerIndex = -1;
+        public Action<int> SelectedLayerChanged;
 
         private Bitmap preparedBackground;
         private readonly List<LayerBasic> layers = new List<LayerBasic>();
@@ -37,31 +38,41 @@ namespace LayersIDK
         public void AddLayer(LayerBasic layer)
         {
             layers.Add(layer);
+            SelectLayer(layers.Count - 1);
         }
 
         public void RemoveLayer(int index)
         {
             layers[index].Dispose();
             layers.RemoveAt(index);
+            SelectLayer(index);
+        }
+
+        public void SelectLayer(int index)
+        {
+            if (index >= layers.Count || index < 0)
+                index = layers.Count - 1;
+
+            if(SelectedLayerIndex != index)
+            {
+                SelectedLayerIndex = index;
+                SelectedLayerChanged?.Invoke(index);
+            }
+        }
+
+        public LayerBasic GetSelectedLayer()
+        {
+            if (SelectedLayerIndex >= 0 && SelectedLayerIndex < Layers.Count)
+                return Layers[SelectedLayerIndex];
+            else
+                return null;
         }
 
         public LayerBasic GetLayerToDraw()
         {
-            if (Layers.Count == 0)
-            {
-                SelectedLayerIndex = 0;
-                return new Layer(this);
-            }
-
-            if (SelectedLayerIndex < 0 || SelectedLayerIndex >= Layers.Count)
-                SelectedLayerIndex = 0;
-
-            LayerBasic result = Layers[SelectedLayerIndex];
-            if (result is not Layer)
-            {
+            LayerBasic result = GetSelectedLayer();
+            if (result == null || result is not Layer)
                 result = new Layer(this);
-                SelectedLayerIndex = Layers.Count - 1;
-            }
 
             return result;
         }
@@ -74,19 +85,16 @@ namespace LayersIDK
         public Bitmap Render(bool force = false)
         {
             if(force)
-            {
-                foreach (var layer in Layers)
-                    layer.Render();
-            }
+                GetSelectedLayer()?.Render();
 
             using (Graphics graphics = Graphics.FromImage(ResultImage))
             {
-                graphics.DrawImage(preparedBackground, 0, 0);
+                graphics.DrawImageUnscaled(preparedBackground, 0, 0);
 
                 foreach (var layer in Layers)
                 {
-                    if(layer.IsEnabled)
-                        graphics.DrawImage(layer.ResultImage, 0, 0);
+                    if (layer.IsEnabled)
+                        graphics.DrawImageUnscaled(layer.ResultImage, 0, 0);
                 }
             }
 
@@ -108,7 +116,7 @@ namespace LayersIDK
                 foreach (var layer in Layers)
                 {
                     if(layer.IsEnabled)
-                        graphics.DrawImage(layer.ResultImage, 0, 0);
+                        graphics.DrawImageUnscaled(layer.ResultImage, 0, 0);
                 }
             }
 

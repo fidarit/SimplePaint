@@ -35,6 +35,14 @@ namespace LayersIDK
             InitializeComponent();
 
             Canvas = new Canvas(1024, 768);
+            Canvas.SelectedLayerChanged += layerIndex =>
+            {
+                RedrawIcons();
+                listView1.SelectedIndices.Clear();
+
+                if (layerIndex >= 0)
+                    listView1.SelectedIndices.Add(layerIndex);
+            };
         }
 
         private void DrawLine(Pen pen, Point from, Point to)
@@ -58,16 +66,13 @@ namespace LayersIDK
             }
         }
 
-
-        private void Form1_Paint(object sender, PaintEventArgs e)
-        {
-            Redraw();
-        }
-
         public void Redraw()
         {
             zoomPictureBox1.Image = Canvas.Render(true);
+        }
 
+        public void RedrawIcons()
+        {
             int width = 64;
             int height = width * Canvas.Height / Canvas.Width;
             var imageList = new ImageList
@@ -113,7 +118,6 @@ namespace LayersIDK
         private void addLayer_Click(object sender, EventArgs e)
         {
             _ = new Layer(Canvas);
-            Redraw();
         }
 
         private void removeLayer_Click(object sender, EventArgs e)
@@ -147,6 +151,7 @@ namespace LayersIDK
                 _ = new ImageLayer(Canvas, image);
 
                 Redraw();
+                RedrawIcons();
             }
         }
 
@@ -162,7 +167,7 @@ namespace LayersIDK
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 string extension = Path.GetExtension(saveFileDialog.FileName).ToLower();
-                if(extension == ".jpg" || extension == ".jpeg")
+                if (extension == ".jpg" || extension == ".jpeg")
                     Canvas.FinalRender().Save(saveFileDialog.FileName, ImageFormat.Jpeg);
 
                 else
@@ -304,7 +309,7 @@ namespace LayersIDK
 
         private void zoomPictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
-            if(e.Button == MouseButtons.Middle && paint)
+            if (e.Button == MouseButtons.Middle && paint)
                 zoomPictureBox1.AllowUserDrag = false;
             else
                 zoomPictureBox1.AllowUserDrag = true;
@@ -330,17 +335,15 @@ namespace LayersIDK
                 DrawLine(pen, oldPoint, newPoint);
 
             Redraw();
+            RedrawIcons();
         }
 
         private void listView1_ItemActivate(object sender, EventArgs e)
         {
-            int index = -1;
             if (listView1.SelectedItems.Count > 0)
-                index = listView1.SelectedItems[0].Index;
-            else if (Canvas.Layers.Count > 0)
-                index = 0;
-
-            Canvas.SelectedLayerIndex = index;
+                Canvas.SelectLayer(listView1.SelectedItems[0].Index);
+            else
+                Canvas.SelectLayer(-1);
         }
 
         private void listView1_ItemCheck(object sender, ItemCheckEventArgs e)
