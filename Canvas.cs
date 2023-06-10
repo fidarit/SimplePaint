@@ -72,10 +72,10 @@ namespace LayersIDK
         public LayerBasic GetLayerToDraw()
         {
             LayerBasic result = GetSelectedLayer();
-            if (result == null || result is not Layer)
-                result = new Layer(this);
+            if (result?.IsEnabled == true && result is Layer)
+                return result;
 
-            return result;
+            return new Layer(this);
         }
 
         public Bitmap CreateNewBitmap()
