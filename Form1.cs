@@ -262,25 +262,28 @@ namespace LayersIDK
 
         private void zoomPictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            if (tools == Tools.None)
-                return;
-
             if (e.Button == MouseButtons.Middle)
                 zoomPictureBox1.AllowUserDrag = true;
 
             else
             {
-                if (Canvas.GetLayerToDraw() == null)
-                    return;
-
-                zoomPictureBox1.AllowUserDrag = false;
-                paint = true;
                 oldPoint = zoomPictureBox1.ClientToImagePoint(e.Location);
+
+                if (tools != Tools.None)
+                {
+                    zoomPictureBox1.AllowUserDrag = false;
+                    paint = true;
+                }
+
+                zoomPictureBox1_MouseMove(sender, e);
             }
         }
 
         private void zoomPictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
+            if (e.Button != MouseButtons.Left && e.Button != MouseButtons.Right)
+                return;
+
             var layer = Canvas.GetLayerToDraw();
             if (layer == null)
                 return;
