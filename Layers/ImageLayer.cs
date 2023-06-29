@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 
 namespace SimplePaint
 {
@@ -10,17 +7,24 @@ namespace SimplePaint
     {
         private Image image;
 
+        public float Zoom { get; private set; }
         public Rectangle Rectangle { get; private set; }
+        public override Image SourceImage => image;
 
         public ImageLayer(Canvas ownCanvas, Image image) : base(ownCanvas)
         {
-            this.image = image;
+            this.image = new Bitmap(image.Width, image.Height, PixelFormat.Format32bppArgb);
+            using (Graphics g = Graphics.FromImage(this.image))
+            {
+                g.CompositingMode = CompositingMode.SourceCopy;
+                g.DrawImage(image, 0, 0, image.Width, image.Height);
+            }
 
             var yZoom = (float)ownCanvas.Height / image.Height;
             var xZoom = (float)ownCanvas.Width / image.Width;
-            var zoom = Math.Min(xZoom, yZoom);
+            Zoom = Math.Min(xZoom, yZoom);
 
-            Rectangle = new Rectangle(Point.Empty, (image.Size * zoom).ToSize());
+            Rectangle = new Rectangle(0, 0, (int)Math.Round(image.Size.Width * Zoom), (int)Math.Round(image.Height * Zoom));
             Render();
         }
 
@@ -31,12 +35,6 @@ namespace SimplePaint
                 graphics.Clear(Color.Transparent);
                 graphics.DrawImage(image, Rectangle);
             }
-        }
-
-        public override void Dispose()
-        {
-            base.Dispose();
-            image.Dispose();
         }
     }
 }

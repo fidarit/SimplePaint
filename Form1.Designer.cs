@@ -35,10 +35,10 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            ListViewItem listViewItem1 = new ListViewItem("Layer one");
-            ListViewItem listViewItem2 = new ListViewItem("Layer two");
+            ListViewItem listViewItem11 = new ListViewItem("Layer one");
+            ListViewItem listViewItem12 = new ListViewItem("Layer two");
             splitContainer1 = new SplitContainer();
-            zoomPictureBox1 = new SimplePaint.ZoomPictureBox();
+            mainPictureBox = new ZoomPictureBox();
             tableLayoutPanel1 = new TableLayoutPanel();
             removeLayer = new Button();
             addImageLayer = new Button();
@@ -50,15 +50,16 @@
             openFileToolStripMenuItem = new ToolStripMenuItem();
             saveFileToolStripMenuItem = new ToolStripMenuItem();
             flowLayoutPanel1 = new FlowLayoutPanel();
-            PencilB = new Button();
-            EraseB = new Button();
-            RectangleB = new Button();
-            RectangleWithRoundedEdgesB = new Button();
-            EllipseB = new Button();
-            LineB = new Button();
-            ColorB = new Button();
-            Colors = new PictureBox();
+            toolNoneButton = new ToolButton();
+            toolPenButton = new ToolButton();
+            toolEraseButton = new ToolButton();
+            toolLineButton = new ToolButton();
+            toolRectangleButton = new ToolButton();
+            toolRoundedRectangleButton = new ToolButton();
+            toolEllipseButton = new ToolButton();
             toolTip1 = new ToolTip(components);
+            toolFillButton = new ToolButton();
+            toolPipetteButton = new ToolButton();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -66,7 +67,15 @@
             tableLayoutPanel1.SuspendLayout();
             menuStrip1.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)Colors).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)toolNoneButton).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)toolPenButton).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)toolEraseButton).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)toolLineButton).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)toolRectangleButton).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)toolRoundedRectangleButton).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)toolEllipseButton).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)toolFillButton).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)toolPipetteButton).BeginInit();
             SuspendLayout();
             // 
             // splitContainer1
@@ -77,7 +86,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            splitContainer1.Panel1.Controls.Add(zoomPictureBox1);
+            splitContainer1.Panel1.Controls.Add(mainPictureBox);
             // 
             // splitContainer1.Panel2
             // 
@@ -89,21 +98,17 @@
             // 
             // zoomPictureBox1
             // 
-            zoomPictureBox1.Dock = DockStyle.Fill;
-            zoomPictureBox1.Image = (Bitmap)resources.GetObject("zoomPictureBox1.Image");
-            zoomPictureBox1.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-            zoomPictureBox1.InterpolationModeZoomOut = System.Drawing.Drawing2D.InterpolationMode.Bilinear;
-            zoomPictureBox1.Location = new Point(0, 0);
-            zoomPictureBox1.Name = "zoomPictureBox1";
-            zoomPictureBox1.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-            zoomPictureBox1.Size = new Size(1173, 624);
-            zoomPictureBox1.TabIndex = 0;
-            zoomPictureBox1.VisibleCenter = (PointF)resources.GetObject("zoomPictureBox1.VisibleCenter");
-            zoomPictureBox1.Zoom = 150F;
-            zoomPictureBox1.Paint += zoomPictureBox1_Paint;
-            zoomPictureBox1.MouseDown += zoomPictureBox1_MouseDown;
-            zoomPictureBox1.MouseMove += zoomPictureBox1_MouseMove;
-            zoomPictureBox1.MouseUp += zoomPictureBox1_MouseUp;
+            mainPictureBox.Dock = DockStyle.Fill;
+            mainPictureBox.Image = (Bitmap)resources.GetObject("zoomPictureBox1.Image");
+            mainPictureBox.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+            mainPictureBox.InterpolationModeZoomOut = System.Drawing.Drawing2D.InterpolationMode.Bilinear;
+            mainPictureBox.Location = new Point(0, 0);
+            mainPictureBox.Name = "zoomPictureBox1";
+            mainPictureBox.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+            mainPictureBox.Size = new Size(1173, 624);
+            mainPictureBox.TabIndex = 0;
+            mainPictureBox.VisibleCenter = (PointF)resources.GetObject("zoomPictureBox1.VisibleCenter");
+            mainPictureBox.Zoom = 150F;
             // 
             // tableLayoutPanel1
             // 
@@ -167,9 +172,9 @@
             listView1.Dock = DockStyle.Bottom;
             listView1.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
             listView1.HeaderStyle = ColumnHeaderStyle.None;
-            listViewItem1.StateImageIndex = 0;
-            listViewItem2.StateImageIndex = 0;
-            listView1.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2 });
+            listViewItem11.StateImageIndex = 0;
+            listViewItem12.StateImageIndex = 0;
+            listView1.Items.AddRange(new ListViewItem[] { listViewItem11, listViewItem12 });
             listView1.LabelEdit = true;
             listView1.LabelWrap = false;
             listView1.Location = new Point(0, 361);
@@ -221,14 +226,15 @@
             // flowLayoutPanel1
             // 
             flowLayoutPanel1.AutoSize = true;
-            flowLayoutPanel1.Controls.Add(PencilB);
-            flowLayoutPanel1.Controls.Add(EraseB);
-            flowLayoutPanel1.Controls.Add(RectangleB);
-            flowLayoutPanel1.Controls.Add(RectangleWithRoundedEdgesB);
-            flowLayoutPanel1.Controls.Add(EllipseB);
-            flowLayoutPanel1.Controls.Add(LineB);
-            flowLayoutPanel1.Controls.Add(ColorB);
-            flowLayoutPanel1.Controls.Add(Colors);
+            flowLayoutPanel1.Controls.Add(toolNoneButton);
+            flowLayoutPanel1.Controls.Add(toolPenButton);
+            flowLayoutPanel1.Controls.Add(toolEraseButton);
+            flowLayoutPanel1.Controls.Add(toolLineButton);
+            flowLayoutPanel1.Controls.Add(toolRectangleButton);
+            flowLayoutPanel1.Controls.Add(toolRoundedRectangleButton);
+            flowLayoutPanel1.Controls.Add(toolEllipseButton);
+            flowLayoutPanel1.Controls.Add(toolFillButton);
+            flowLayoutPanel1.Controls.Add(toolPipetteButton);
             flowLayoutPanel1.Dock = DockStyle.Left;
             flowLayoutPanel1.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanel1.Location = new Point(0, 24);
@@ -237,98 +243,148 @@
             flowLayoutPanel1.TabIndex = 5;
             flowLayoutPanel1.WrapContents = false;
             // 
-            // PencilB
+            // toolNoneButton
             // 
-            PencilB.AutoSize = true;
-            PencilB.Location = new Point(3, 3);
-            PencilB.Name = "PencilB";
-            PencilB.Size = new Size(49, 45);
-            PencilB.TabIndex = 5;
-            PencilB.Text = "✏️";
-            toolTip1.SetToolTip(PencilB, "Карандаш");
-            PencilB.UseVisualStyleBackColor = true;
-            PencilB.Click += PencilB_Click;
+            toolNoneButton.ActiveColor = Color.FromArgb(60, 114, 196);
+            toolNoneButton.BorderStyle = BorderStyle.FixedSingle;
+            toolNoneButton.Cursor = Cursors.Hand;
+            toolNoneButton.Image = (Image)resources.GetObject("toolNoneButton.Image");
+            toolNoneButton.Location = new Point(2, 2);
+            toolNoneButton.Margin = new Padding(2);
+            toolNoneButton.Name = "toolNoneButton";
+            toolNoneButton.Size = new Size(49, 45);
+            toolNoneButton.SizeMode = PictureBoxSizeMode.Zoom;
+            toolNoneButton.TabIndex = 2;
+            toolNoneButton.TabStop = false;
+            toolTip1.SetToolTip(toolNoneButton, "Перемещение");
             // 
-            // EraseB
+            // toolPenButton
             // 
-            EraseB.AutoSize = true;
-            EraseB.Location = new Point(3, 54);
-            EraseB.Name = "EraseB";
-            EraseB.Size = new Size(49, 45);
-            EraseB.TabIndex = 12;
-            EraseB.Text = "❒";
-            toolTip1.SetToolTip(EraseB, "Ластик");
-            EraseB.UseVisualStyleBackColor = true;
-            EraseB.Click += EraseB_Click;
+            toolPenButton.ActiveColor = Color.FromArgb(60, 114, 196);
+            toolPenButton.BorderStyle = BorderStyle.FixedSingle;
+            toolPenButton.Image = (Image)resources.GetObject("toolPenButton.Image");
+            toolPenButton.Location = new Point(3, 52);
+            toolPenButton.MaximumSize = new Size(49, 45);
+            toolPenButton.Name = "toolPenButton";
+            toolPenButton.Size = new Size(49, 45);
+            toolPenButton.SizeMode = PictureBoxSizeMode.Zoom;
+            toolPenButton.TabIndex = 12;
+            toolPenButton.TabStop = false;
+            toolPenButton.Text = "❒";
+            toolTip1.SetToolTip(toolPenButton, "Карандаш");
+            toolPenButton.ToolType = Tools.Pen;
             // 
-            // RectangleB
+            // toolEraseButton
             // 
-            RectangleB.AutoSize = true;
-            RectangleB.Location = new Point(3, 105);
-            RectangleB.Name = "RectangleB";
-            RectangleB.Size = new Size(49, 45);
-            RectangleB.TabIndex = 6;
-            RectangleB.Text = "□";
-            toolTip1.SetToolTip(RectangleB, "Прямоугольник");
-            RectangleB.UseVisualStyleBackColor = true;
-            RectangleB.Click += RectangleB_Click;
+            toolEraseButton.ActiveColor = Color.FromArgb(60, 114, 196);
+            toolEraseButton.BorderStyle = BorderStyle.FixedSingle;
+            toolEraseButton.Image = (Image)resources.GetObject("toolEraseButton.Image");
+            toolEraseButton.Location = new Point(3, 103);
+            toolEraseButton.MaximumSize = new Size(49, 45);
+            toolEraseButton.Name = "toolEraseButton";
+            toolEraseButton.Size = new Size(49, 45);
+            toolEraseButton.SizeMode = PictureBoxSizeMode.Zoom;
+            toolEraseButton.TabIndex = 6;
+            toolEraseButton.TabStop = false;
+            toolEraseButton.Text = "□";
+            toolTip1.SetToolTip(toolEraseButton, "Ластик");
+            toolEraseButton.ToolType = Tools.Erase;
             // 
-            // RectangleWithRoundedEdgesB
+            // toolLineButton
             // 
-            RectangleWithRoundedEdgesB.AutoSize = true;
-            RectangleWithRoundedEdgesB.Location = new Point(3, 156);
-            RectangleWithRoundedEdgesB.Name = "RectangleWithRoundedEdgesB";
-            RectangleWithRoundedEdgesB.Size = new Size(49, 45);
-            RectangleWithRoundedEdgesB.TabIndex = 7;
-            RectangleWithRoundedEdgesB.Text = "▢";
-            toolTip1.SetToolTip(RectangleWithRoundedEdgesB, "Закругленный прямоугольник");
-            RectangleWithRoundedEdgesB.UseVisualStyleBackColor = true;
-            RectangleWithRoundedEdgesB.Click += RectangleWithRoundedEdgesB_Click;
+            toolLineButton.ActiveColor = Color.FromArgb(60, 114, 196);
+            toolLineButton.BorderStyle = BorderStyle.FixedSingle;
+            toolLineButton.Image = (Image)resources.GetObject("toolLineButton.Image");
+            toolLineButton.Location = new Point(3, 154);
+            toolLineButton.MaximumSize = new Size(49, 45);
+            toolLineButton.Name = "toolLineButton";
+            toolLineButton.Size = new Size(49, 45);
+            toolLineButton.SizeMode = PictureBoxSizeMode.Zoom;
+            toolLineButton.TabIndex = 7;
+            toolLineButton.TabStop = false;
+            toolLineButton.Text = "▢";
+            toolTip1.SetToolTip(toolLineButton, "Линия");
+            toolLineButton.ToolType = Tools.Line;
             // 
-            // EllipseB
+            // toolRectangleButton
             // 
-            EllipseB.AutoSize = true;
-            EllipseB.Location = new Point(3, 207);
-            EllipseB.Name = "EllipseB";
-            EllipseB.Size = new Size(49, 45);
-            EllipseB.TabIndex = 8;
-            EllipseB.Text = "⬭";
-            toolTip1.SetToolTip(EllipseB, "Эллипс");
-            EllipseB.UseVisualStyleBackColor = true;
-            EllipseB.Click += EllipseB_Click;
+            toolRectangleButton.ActiveColor = Color.FromArgb(60, 114, 196);
+            toolRectangleButton.BorderStyle = BorderStyle.FixedSingle;
+            toolRectangleButton.Image = (Image)resources.GetObject("toolRectangleButton.Image");
+            toolRectangleButton.Location = new Point(3, 205);
+            toolRectangleButton.MaximumSize = new Size(49, 45);
+            toolRectangleButton.Name = "toolRectangleButton";
+            toolRectangleButton.Size = new Size(49, 45);
+            toolRectangleButton.SizeMode = PictureBoxSizeMode.Zoom;
+            toolRectangleButton.TabIndex = 8;
+            toolRectangleButton.TabStop = false;
+            toolRectangleButton.Text = "⬭";
+            toolTip1.SetToolTip(toolRectangleButton, "Прямоугольник");
+            toolRectangleButton.ToolType = Tools.Rect;
             // 
-            // LineB
+            // toolRoundedRectangleButton
             // 
-            LineB.AutoSize = true;
-            LineB.Location = new Point(3, 258);
-            LineB.Name = "LineB";
-            LineB.Size = new Size(49, 45);
-            LineB.TabIndex = 9;
-            LineB.Text = "\\";
-            toolTip1.SetToolTip(LineB, "Линия");
-            LineB.UseVisualStyleBackColor = true;
-            LineB.Click += LineB_Click;
+            toolRoundedRectangleButton.ActiveColor = Color.FromArgb(60, 114, 196);
+            toolRoundedRectangleButton.BorderStyle = BorderStyle.FixedSingle;
+            toolRoundedRectangleButton.Image = (Image)resources.GetObject("toolRoundedRectangleButton.Image");
+            toolRoundedRectangleButton.Location = new Point(3, 256);
+            toolRoundedRectangleButton.MaximumSize = new Size(49, 45);
+            toolRoundedRectangleButton.Name = "toolRoundedRectangleButton";
+            toolRoundedRectangleButton.Size = new Size(49, 45);
+            toolRoundedRectangleButton.SizeMode = PictureBoxSizeMode.Zoom;
+            toolRoundedRectangleButton.TabIndex = 9;
+            toolRoundedRectangleButton.TabStop = false;
+            toolRoundedRectangleButton.Text = "\\";
+            toolTip1.SetToolTip(toolRoundedRectangleButton, "Закругленный прямоугольник");
+            toolRoundedRectangleButton.ToolType = Tools.RoundedRect;
             // 
-            // ColorB
+            // toolEllipseButton
             // 
-            ColorB.AutoSize = true;
-            ColorB.Location = new Point(3, 309);
-            ColorB.Name = "ColorB";
-            ColorB.Size = new Size(49, 45);
-            ColorB.TabIndex = 10;
-            ColorB.Text = "Цвет";
-            toolTip1.SetToolTip(ColorB, "Палитра цветов");
-            ColorB.UseVisualStyleBackColor = true;
-            ColorB.Click += ColorB_Click;
+            toolEllipseButton.ActiveColor = Color.FromArgb(60, 114, 196);
+            toolEllipseButton.BorderStyle = BorderStyle.FixedSingle;
+            toolEllipseButton.Image = (Image)resources.GetObject("toolEllipseButton.Image");
+            toolEllipseButton.Location = new Point(3, 307);
+            toolEllipseButton.MaximumSize = new Size(49, 45);
+            toolEllipseButton.Name = "toolEllipseButton";
+            toolEllipseButton.Size = new Size(49, 45);
+            toolEllipseButton.SizeMode = PictureBoxSizeMode.Zoom;
+            toolEllipseButton.TabIndex = 10;
+            toolEllipseButton.TabStop = false;
+            toolEllipseButton.Text = "Цвет";
+            toolTip1.SetToolTip(toolEllipseButton, "Эллипс");
+            toolEllipseButton.ToolType = Tools.Ellipse;
             // 
-            // Colors
+            // toolFillButton
             // 
-            Colors.Location = new Point(3, 359);
-            Colors.Margin = new Padding(3, 2, 3, 2);
-            Colors.Name = "Colors";
-            Colors.Size = new Size(49, 40);
-            Colors.TabIndex = 11;
-            Colors.TabStop = false;
+            toolFillButton.ActiveColor = Color.FromArgb(60, 114, 196);
+            toolFillButton.BorderStyle = BorderStyle.FixedSingle;
+            toolFillButton.Image = (Image)resources.GetObject("toolFillButton.Image");
+            toolFillButton.Location = new Point(3, 358);
+            toolFillButton.MaximumSize = new Size(49, 45);
+            toolFillButton.Name = "toolFillButton";
+            toolFillButton.Size = new Size(49, 45);
+            toolFillButton.SizeMode = PictureBoxSizeMode.Zoom;
+            toolFillButton.TabIndex = 13;
+            toolFillButton.TabStop = false;
+            toolFillButton.Text = "Цвет";
+            toolTip1.SetToolTip(toolFillButton, "Заливка");
+            toolFillButton.ToolType = Tools.Fill;
+            // 
+            // toolPipetteButton
+            // 
+            toolPipetteButton.ActiveColor = Color.FromArgb(60, 114, 196);
+            toolPipetteButton.BorderStyle = BorderStyle.FixedSingle;
+            toolPipetteButton.Image = (Image)resources.GetObject("toolPipetteButton.Image");
+            toolPipetteButton.Location = new Point(3, 409);
+            toolPipetteButton.MaximumSize = new Size(49, 45);
+            toolPipetteButton.Name = "toolPipetteButton";
+            toolPipetteButton.Size = new Size(49, 45);
+            toolPipetteButton.SizeMode = PictureBoxSizeMode.Zoom;
+            toolPipetteButton.TabIndex = 14;
+            toolPipetteButton.TabStop = false;
+            toolPipetteButton.Text = "Цвет";
+            toolTip1.SetToolTip(toolPipetteButton, "Пипетка");
+            toolPipetteButton.ToolType = Tools.Pipette;
             // 
             // Form1
             // 
@@ -350,8 +406,15 @@
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             flowLayoutPanel1.ResumeLayout(false);
-            flowLayoutPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)Colors).EndInit();
+            ((System.ComponentModel.ISupportInitialize)toolNoneButton).EndInit();
+            ((System.ComponentModel.ISupportInitialize)toolPenButton).EndInit();
+            ((System.ComponentModel.ISupportInitialize)toolEraseButton).EndInit();
+            ((System.ComponentModel.ISupportInitialize)toolLineButton).EndInit();
+            ((System.ComponentModel.ISupportInitialize)toolRectangleButton).EndInit();
+            ((System.ComponentModel.ISupportInitialize)toolRoundedRectangleButton).EndInit();
+            ((System.ComponentModel.ISupportInitialize)toolEllipseButton).EndInit();
+            ((System.ComponentModel.ISupportInitialize)toolFillButton).EndInit();
+            ((System.ComponentModel.ISupportInitialize)toolPipetteButton).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -359,7 +422,7 @@
         #endregion
 
         private SplitContainer splitContainer1;
-        private SimplePaint.ZoomPictureBox zoomPictureBox1;
+        private SimplePaint.ZoomPictureBox mainPictureBox;
         private Button addImageLayer;
         private ListView listView1;
         private Button removeLayer;
@@ -371,14 +434,15 @@
         private TableLayoutPanel tableLayoutPanel1;
         private ColumnHeader columnHeader1;
         private FlowLayoutPanel flowLayoutPanel1;
-        private Button PencilB;
-        private Button RectangleB;
-        private Button RectangleWithRoundedEdgesB;
-        private Button EllipseB;
-        private Button LineB;
-        private Button ColorB;
-        private PictureBox Colors;
-        private Button EraseB;
+        private ToolButton toolNoneButton;
+        private ToolButton toolEraseButton;
+        private ToolButton toolLineButton;
+        private ToolButton toolRectangleButton;
+        private ToolButton toolRoundedRectangleButton;
+        private ToolButton toolEllipseButton;
+        private ToolButton toolPenButton;
         private ToolTip toolTip1;
+        private ToolButton toolFillButton;
+        private ToolButton toolPipetteButton;
     }
 }

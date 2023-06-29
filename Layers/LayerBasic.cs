@@ -15,7 +15,7 @@ namespace SimplePaint
         public bool IsEnabled = true;
 
         public Bitmap ResultImage { get; protected set; }
-
+        public virtual Image SourceImage => ResultImage;
 
         public LayerBasic(Canvas ownCanvas)
         {
