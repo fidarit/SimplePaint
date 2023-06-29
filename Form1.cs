@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Windows.Forms;
 
-namespace LayersIDK
+namespace SimplePaint
 {
     enum Tools
     {
@@ -56,7 +56,7 @@ namespace LayersIDK
 
             g.CompositingMode = mode;
         }
-        
+
         private void DrawLine(Pen pen, Point from, Point to)
         {
             if (pen.Width > 2)
@@ -382,6 +382,11 @@ namespace LayersIDK
             {
                 Canvas.Layers[e.Item].Name = e.Label;
             }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

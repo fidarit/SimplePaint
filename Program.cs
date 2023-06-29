@@ -1,4 +1,4 @@
-namespace LayersIDK
+namespace SimplePaint
 {
     internal static class Program
     {

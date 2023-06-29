@@ -1,4 +1,4 @@
-﻿namespace LayersIDK
+﻿namespace SimplePaint
 {
     partial class Form1
     {
@@ -38,7 +38,7 @@
             ListViewItem listViewItem1 = new ListViewItem("Layer one");
             ListViewItem listViewItem2 = new ListViewItem("Layer two");
             splitContainer1 = new SplitContainer();
-            zoomPictureBox1 = new Wavelet.ZoomPictureBox();
+            zoomPictureBox1 = new SimplePaint.ZoomPictureBox();
             tableLayoutPanel1 = new TableLayoutPanel();
             removeLayer = new Button();
             addImageLayer = new Button();
@@ -341,6 +341,7 @@
             MainMenuStrip = menuStrip1;
             Name = "Form1";
             Text = "Form1";
+            Load += Form1_Load;
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
@@ -358,7 +359,7 @@
         #endregion
 
         private SplitContainer splitContainer1;
-        private Wavelet.ZoomPictureBox zoomPictureBox1;
+        private SimplePaint.ZoomPictureBox zoomPictureBox1;
         private Button addImageLayer;
         private ListView listView1;
         private Button removeLayer;

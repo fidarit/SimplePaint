@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LayersIDK
+namespace SimplePaint
 {
     public abstract class LayerBasic : IDisposable
     {

@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
-namespace Wavelet
+namespace SimplePaint
 {
     public class ZoomPictureBox : UserControl
     {
@@ -16,6 +16,8 @@ namespace Wavelet
         PointF startDraggedVisibleCenter;
         int sourceImageWidth;
         int sourceImageHeight;
+
+        public bool FastMode = false;
 
         public event EventHandler VisibleCenterChanged;
 
@@ -39,9 +41,7 @@ namespace Wavelet
 
         public ZoomPictureBox()
         {
-            //drawing optimization
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw, true);
-            //default settings
             ZoomDelta = 0.1f;
             AllowUserDrag = true;
             AllowUserZoom = true;
@@ -87,7 +87,7 @@ namespace Wavelet
             get => zoom;
             set
             {
-                zoom = Math.Clamp(value, MinZoom, MaxZoom);
+                zoom = Clamp(value, MinZoom, MaxZoom);
                 Invalidate();
             }
         }
@@ -149,6 +149,16 @@ namespace Wavelet
             Invalidate();
         }
 
+        private static float Clamp(float value, float min, float max)
+        {
+            if (value < min)
+                return min;
+            else if (value > max)
+                return max;
+
+            return value;
+        }
+
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
@@ -157,8 +167,8 @@ namespace Wavelet
                 var dx = e.Location.X - startDragged.X;
                 var dy = e.Location.Y - startDragged.Y;
 
-                var newX = Math.Clamp(startDraggedVisibleCenter.X - dx / zoom, 0f, sourceImageWidth);
-                var newY = Math.Clamp(startDraggedVisibleCenter.Y - dy / zoom, 0f, sourceImageHeight);
+                var newX = Clamp(startDraggedVisibleCenter.X - dx / zoom, 0f, sourceImageWidth);
+                var newY = Clamp(startDraggedVisibleCenter.Y - dy / zoom, 0f, sourceImageHeight);
 
                 VisibleCenter = new PointF(newX, newY);
             }
@@ -188,17 +198,21 @@ namespace Wavelet
                 return;
 
             e.Graphics.ResetTransform();
-            e.Graphics.InterpolationMode = Zoom < 1f ? InterpolationModeZoomOut : InterpolationMode;
             e.Graphics.PixelOffsetMode = PixelOffsetMode;
 
-            if (mouseState == MouseState.Drag)
-            {
+            if (mouseState == MouseState.Drag || FastMode)
                 e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-            }
+            else
+                e.Graphics.InterpolationMode = Zoom < 1f ? InterpolationModeZoomOut : InterpolationMode;
 
-            var p = ImagePointToClient(Point.Empty);
+            var p = ImagePointToClient(PointF.Empty);
+            var rect = new RectangleF(p.X, p.Y, image.Width * Zoom, image.Height * Zoom);
 
-            e.Graphics.DrawImage(image, p.X, p.Y, image.Width * Zoom, image.Height * Zoom);
+            e.Graphics.DrawImage(image, rect);
+
+            e.Graphics.IntersectClip(rect);
+            e.Graphics.TranslateTransform(p.X + 0.5f * Zoom, p.Y + 0.5f * Zoom);
+            e.Graphics.ScaleTransform(Zoom, Zoom);
 
             base.OnPaint(e);
         }
