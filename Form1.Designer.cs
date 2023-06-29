@@ -35,10 +35,11 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            ListViewItem listViewItem11 = new ListViewItem("Layer one");
-            ListViewItem listViewItem12 = new ListViewItem("Layer two");
+            ListViewItem listViewItem5 = new ListViewItem("Layer one");
+            ListViewItem listViewItem6 = new ListViewItem("Layer two");
             splitContainer1 = new SplitContainer();
             mainPictureBox = new ZoomPictureBox();
+            colorPalette = new ColorPalette();
             tableLayoutPanel1 = new TableLayoutPanel();
             removeLayer = new Button();
             addImageLayer = new Button();
@@ -57,9 +58,9 @@
             toolRectangleButton = new ToolButton();
             toolRoundedRectangleButton = new ToolButton();
             toolEllipseButton = new ToolButton();
-            toolTip1 = new ToolTip(components);
             toolFillButton = new ToolButton();
             toolPipetteButton = new ToolButton();
+            toolTip1 = new ToolTip(components);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -90,25 +91,36 @@
             // 
             // splitContainer1.Panel2
             // 
+            splitContainer1.Panel2.Controls.Add(colorPalette);
             splitContainer1.Panel2.Controls.Add(tableLayoutPanel1);
             splitContainer1.Panel2.Controls.Add(listView1);
             splitContainer1.Size = new Size(1567, 624);
             splitContainer1.SplitterDistance = 1173;
             splitContainer1.TabIndex = 0;
             // 
-            // zoomPictureBox1
+            // mainPictureBox
             // 
             mainPictureBox.Dock = DockStyle.Fill;
-            mainPictureBox.Image = (Bitmap)resources.GetObject("zoomPictureBox1.Image");
+            mainPictureBox.Image = (Bitmap)resources.GetObject("mainPictureBox.Image");
             mainPictureBox.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             mainPictureBox.InterpolationModeZoomOut = System.Drawing.Drawing2D.InterpolationMode.Bilinear;
             mainPictureBox.Location = new Point(0, 0);
-            mainPictureBox.Name = "zoomPictureBox1";
+            mainPictureBox.Name = "mainPictureBox";
             mainPictureBox.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
             mainPictureBox.Size = new Size(1173, 624);
             mainPictureBox.TabIndex = 0;
-            mainPictureBox.VisibleCenter = (PointF)resources.GetObject("zoomPictureBox1.VisibleCenter");
+            mainPictureBox.VisibleCenter = (PointF)resources.GetObject("mainPictureBox.VisibleCenter");
             mainPictureBox.Zoom = 150F;
+            // 
+            // colorPalette
+            // 
+            colorPalette.Dock = DockStyle.Top;
+            colorPalette.Location = new Point(0, 0);
+            colorPalette.Name = "colorPalette";
+            colorPalette.Size = new Size(390, 267);
+            colorPalette.TabIndex = 5;
+            colorPalette.Text = "colorPalette1";
+            colorPalette.ColorSelected += colorPalette_ColorSelected;
             // 
             // tableLayoutPanel1
             // 
@@ -172,9 +184,9 @@
             listView1.Dock = DockStyle.Bottom;
             listView1.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
             listView1.HeaderStyle = ColumnHeaderStyle.None;
-            listViewItem11.StateImageIndex = 0;
-            listViewItem12.StateImageIndex = 0;
-            listView1.Items.AddRange(new ListViewItem[] { listViewItem11, listViewItem12 });
+            listViewItem5.StateImageIndex = 0;
+            listViewItem6.StateImageIndex = 0;
+            listView1.Items.AddRange(new ListViewItem[] { listViewItem5, listViewItem6 });
             listView1.LabelEdit = true;
             listView1.LabelWrap = false;
             listView1.Location = new Point(0, 361);
@@ -444,5 +456,6 @@
         private ToolTip toolTip1;
         private ToolButton toolFillButton;
         private ToolButton toolPipetteButton;
+        private ColorPalette colorPalette;
     }
 }

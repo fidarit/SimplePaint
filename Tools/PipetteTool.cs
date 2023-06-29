@@ -17,8 +17,11 @@ namespace SimplePaint
 
         protected override void OnMouseUp(Graphics g)
         {
-            Color pickedColor = pictureBox.Image.GetPixel(newPoint.X, newPoint.Y);
-            Form1.Instance.ActiveColor = pickedColor;
+            int x = Math.Clamp(newPoint.X, 0, pictureBox.Width);
+            int y = Math.Clamp(newPoint.Y, 0, pictureBox.Height);
+
+            Color pickedColor = pictureBox.Image.GetPixel(x, y);
+            Form1.Instance.SetColor(pickedColor);
         }
     }
 }

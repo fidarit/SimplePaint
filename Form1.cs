@@ -11,7 +11,7 @@ namespace SimplePaint
     {
         public static Form1 Instance { get; private set; }
         public Canvas Canvas { get; set; }
-        public Color ActiveColor { get; set; } = Color.Black;
+        public Color ActiveColor { get; private set; } = Color.Black;
 
         private Tool activeTool;
         private EraserTool eraser;
@@ -37,7 +37,6 @@ namespace SimplePaint
                     }
                 }
             };
-
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -146,13 +145,13 @@ namespace SimplePaint
 
         private void addLayer_Click(object sender, EventArgs e)
         {
-            _ = new Layer(Canvas);  
+            _ = new Layer(Canvas);
         }
 
         private void removeLayer_Click(object sender, EventArgs e)
         {
             int index = Canvas.Layers.Count - 1;
-            
+
             if (listView1.SelectedIndices.Count > 0)
                 index = listView1.SelectedIndices[0];
 
@@ -232,6 +231,17 @@ namespace SimplePaint
             {
                 Canvas.Layers[e.Item].Name = e.Label;
             }
+        }
+
+        public void SetColor(Color color)
+        {
+            ActiveColor = color;
+            colorPalette.SetColor(color);
+        }
+
+        private void colorPalette_ColorSelected(object sender, ColorSelectedEventArgs e)
+        {
+            ActiveColor = e.SelectedColor;
         }
     }
 }
