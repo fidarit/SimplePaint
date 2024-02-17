@@ -1,4 +1,5 @@
 ﻿using SimplePaint.Controls;
+using SimplePaint.Tools;
 
 namespace SimplePaint
 {

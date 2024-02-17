@@ -1,4 +1,6 @@
 ﻿using SimplePaint.Controls;
+using SimplePaint.Layers;
+using SimplePaint.Tools;
 using System.Drawing.Imaging;
 
 namespace SimplePaint

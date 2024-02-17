@@ -1,7 +1,7 @@
 ﻿using SimplePaint.Controls;
 using System.Drawing.Drawing2D;
 
-namespace SimplePaint
+namespace SimplePaint.Tools
 {
     internal class RoundedRectangleTool : Tool
     {

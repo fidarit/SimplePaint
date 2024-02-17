@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using SimplePaint.Layers;
+using System.Collections.Concurrent;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using SimplePaint.Tools;
+using System.ComponentModel;
 
 namespace SimplePaint.Controls
 {

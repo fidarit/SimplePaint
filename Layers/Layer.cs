@@ -1,4 +1,4 @@
-﻿namespace SimplePaint
+﻿namespace SimplePaint.Layers
 {
     internal class Layer : LayerBasic
     {

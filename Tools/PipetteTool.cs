@@ -1,6 +1,6 @@
 ﻿using SimplePaint.Controls;
 
-namespace SimplePaint
+namespace SimplePaint.Tools
 {
     internal class PipetteTool : Tool
     {

@@ -1,6 +1,7 @@
 ﻿using SimplePaint.Controls;
+using SimplePaint.Layers;
 
-namespace SimplePaint
+namespace SimplePaint.Tools
 {
     public enum ToolType
     {

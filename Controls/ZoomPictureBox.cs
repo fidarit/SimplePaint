@@ -5,14 +5,14 @@ namespace SimplePaint.Controls
 {
     public class ZoomPictureBox : UserControl
     {
-        Bitmap image = new Bitmap(1, 1);
-        PointF visibleCenter;
-        float zoom = 1f;
-        MouseState mouseState;
-        Point startDragged;
-        PointF startDraggedVisibleCenter;
-        int sourceImageWidth;
-        int sourceImageHeight;
+        private Bitmap image = new Bitmap(1, 1);
+        private PointF visibleCenter;
+        private float zoom = 1f;
+        private MouseState mouseState;
+        private Point startDragged;
+        private PointF startDraggedVisibleCenter;
+        private int sourceImageWidth;
+        private int sourceImageHeight;
 
         public bool FastMode = false;
 
@@ -246,7 +246,7 @@ namespace SimplePaint.Controls
             return img;
         }
 
-        enum MouseState
+        private enum MouseState
         {
             None, Drag
         }
