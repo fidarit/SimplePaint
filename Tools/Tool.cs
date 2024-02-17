@@ -1,5 +1,5 @@
 ﻿using SimplePaint.Controls;
-using SimplePaint.Layers;
+using SimplePaint.Models.Layers;
 
 namespace SimplePaint.Tools
 {

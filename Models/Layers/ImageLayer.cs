@@ -1,7 +1,7 @@
 ﻿using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 
-namespace SimplePaint.Layers
+namespace SimplePaint.Models.Layers
 {
     public class ImageLayer : LayerBasic
     {

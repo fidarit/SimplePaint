@@ -1,5 +1,6 @@
 ﻿using SimplePaint.Controls;
-using SimplePaint.Layers;
+using SimplePaint.Models;
+using SimplePaint.Models.Layers;
 using SimplePaint.Tools;
 using System.Drawing.Imaging;
 

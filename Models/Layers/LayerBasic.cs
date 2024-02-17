@@ -1,4 +1,4 @@
-﻿namespace SimplePaint.Layers
+﻿namespace SimplePaint.Models.Layers
 {
     public abstract class LayerBasic : IDisposable
     {
