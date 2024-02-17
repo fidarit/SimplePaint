@@ -2,7 +2,7 @@
 
 namespace SimplePaint
 {
-    public enum Tools
+    public enum ToolType
     {
         None,
         Pen,
@@ -77,7 +77,7 @@ namespace SimplePaint
 
         protected void InitGraphics()
         {
-            var layer = Form1.Instance.Canvas.GetLayerToDraw();
+            var layer = MainForm.Instance.Canvas.GetLayerToDraw();
             if (layer == null)
                 return;
 
@@ -125,7 +125,7 @@ namespace SimplePaint
 
                     if (!(this is EraserTool))
                     {
-                        pen.Color = Form1.Instance.ActiveColor;
+                        pen.Color = MainForm.Instance.ActiveColor;
                     }
 
                     pen.Width = Size;
@@ -152,7 +152,7 @@ namespace SimplePaint
                 pictureBox.FastMode = false;
                 OnMouseUp(g);
 
-                Form1.Instance.Redraw();
+                MainForm.Instance.Redraw();
             }
         }
         private void OnMouseMove(object sender, MouseEventArgs e)

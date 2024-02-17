@@ -2,7 +2,7 @@
 
 namespace SimplePaint
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -36,9 +36,9 @@ namespace SimplePaint
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            ListViewItem listViewItem5 = new ListViewItem("Layer one");
-            ListViewItem listViewItem6 = new ListViewItem("Layer two");
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            ListViewItem listViewItem3 = new ListViewItem("Layer one");
+            ListViewItem listViewItem4 = new ListViewItem("Layer two");
             splitContainer1 = new SplitContainer();
             mainPictureBox = new ZoomPictureBox();
             colorPalette = new ColorPalette();
@@ -46,7 +46,7 @@ namespace SimplePaint
             removeLayer = new Button();
             addImageLayer = new Button();
             addLayer = new Button();
-            listView1 = new ListView();
+            layersListView = new ListView();
             columnHeader1 = new ColumnHeader();
             menuStrip1 = new MenuStrip();
             fileToolStripMenuItem = new ToolStripMenuItem();
@@ -95,7 +95,7 @@ namespace SimplePaint
             // 
             splitContainer1.Panel2.Controls.Add(colorPalette);
             splitContainer1.Panel2.Controls.Add(tableLayoutPanel1);
-            splitContainer1.Panel2.Controls.Add(listView1);
+            splitContainer1.Panel2.Controls.Add(layersListView);
             splitContainer1.Size = new Size(1567, 624);
             splitContainer1.SplitterDistance = 1173;
             splitContainer1.TabIndex = 0;
@@ -178,29 +178,29 @@ namespace SimplePaint
             addLayer.UseVisualStyleBackColor = true;
             addLayer.Click += addLayer_Click;
             // 
-            // listView1
+            // layersListView
             // 
-            listView1.AutoArrange = false;
-            listView1.CheckBoxes = true;
-            listView1.Columns.AddRange(new ColumnHeader[] { columnHeader1 });
-            listView1.Dock = DockStyle.Bottom;
-            listView1.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
-            listView1.HeaderStyle = ColumnHeaderStyle.None;
-            listViewItem5.StateImageIndex = 0;
-            listViewItem6.StateImageIndex = 0;
-            listView1.Items.AddRange(new ListViewItem[] { listViewItem5, listViewItem6 });
-            listView1.LabelEdit = true;
-            listView1.LabelWrap = false;
-            listView1.Location = new Point(0, 361);
-            listView1.MultiSelect = false;
-            listView1.Name = "listView1";
-            listView1.Size = new Size(390, 263);
-            listView1.TabIndex = 2;
-            listView1.UseCompatibleStateImageBehavior = false;
-            listView1.View = View.Details;
-            listView1.AfterLabelEdit += listView1_AfterLabelEdit;
-            listView1.ItemActivate += listView1_ItemActivate;
-            listView1.ItemCheck += listView1_ItemCheck;
+            layersListView.AutoArrange = false;
+            layersListView.CheckBoxes = true;
+            layersListView.Columns.AddRange(new ColumnHeader[] { columnHeader1 });
+            layersListView.Dock = DockStyle.Bottom;
+            layersListView.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point);
+            layersListView.HeaderStyle = ColumnHeaderStyle.None;
+            listViewItem3.StateImageIndex = 0;
+            listViewItem4.StateImageIndex = 0;
+            layersListView.Items.AddRange(new ListViewItem[] { listViewItem3, listViewItem4 });
+            layersListView.LabelEdit = true;
+            layersListView.LabelWrap = false;
+            layersListView.Location = new Point(0, 361);
+            layersListView.MultiSelect = false;
+            layersListView.Name = "layersListView";
+            layersListView.Size = new Size(390, 263);
+            layersListView.TabIndex = 2;
+            layersListView.UseCompatibleStateImageBehavior = false;
+            layersListView.View = View.Details;
+            layersListView.AfterLabelEdit += listView1_AfterLabelEdit;
+            layersListView.ItemActivate += listView1_ItemActivate;
+            layersListView.ItemCheck += listView1_ItemCheck;
             // 
             // columnHeader1
             // 
@@ -286,7 +286,7 @@ namespace SimplePaint
             toolPenButton.TabStop = false;
             toolPenButton.Text = "❒";
             toolTip1.SetToolTip(toolPenButton, "Карандаш");
-            toolPenButton.ToolType = Tools.Pen;
+            toolPenButton.ToolType = ToolType.Pen;
             // 
             // toolEraseButton
             // 
@@ -302,7 +302,7 @@ namespace SimplePaint
             toolEraseButton.TabStop = false;
             toolEraseButton.Text = "□";
             toolTip1.SetToolTip(toolEraseButton, "Ластик");
-            toolEraseButton.ToolType = Tools.Erase;
+            toolEraseButton.ToolType = ToolType.Erase;
             // 
             // toolLineButton
             // 
@@ -318,7 +318,7 @@ namespace SimplePaint
             toolLineButton.TabStop = false;
             toolLineButton.Text = "▢";
             toolTip1.SetToolTip(toolLineButton, "Линия");
-            toolLineButton.ToolType = Tools.Line;
+            toolLineButton.ToolType = ToolType.Line;
             // 
             // toolRectangleButton
             // 
@@ -334,7 +334,7 @@ namespace SimplePaint
             toolRectangleButton.TabStop = false;
             toolRectangleButton.Text = "⬭";
             toolTip1.SetToolTip(toolRectangleButton, "Прямоугольник");
-            toolRectangleButton.ToolType = Tools.Rect;
+            toolRectangleButton.ToolType = ToolType.Rect;
             // 
             // toolRoundedRectangleButton
             // 
@@ -350,7 +350,7 @@ namespace SimplePaint
             toolRoundedRectangleButton.TabStop = false;
             toolRoundedRectangleButton.Text = "\\";
             toolTip1.SetToolTip(toolRoundedRectangleButton, "Закругленный прямоугольник");
-            toolRoundedRectangleButton.ToolType = Tools.RoundedRect;
+            toolRoundedRectangleButton.ToolType = ToolType.RoundedRect;
             // 
             // toolEllipseButton
             // 
@@ -366,7 +366,7 @@ namespace SimplePaint
             toolEllipseButton.TabStop = false;
             toolEllipseButton.Text = "Цвет";
             toolTip1.SetToolTip(toolEllipseButton, "Эллипс");
-            toolEllipseButton.ToolType = Tools.Ellipse;
+            toolEllipseButton.ToolType = ToolType.Ellipse;
             // 
             // toolFillButton
             // 
@@ -382,7 +382,7 @@ namespace SimplePaint
             toolFillButton.TabStop = false;
             toolFillButton.Text = "Цвет";
             toolTip1.SetToolTip(toolFillButton, "Заливка");
-            toolFillButton.ToolType = Tools.Fill;
+            toolFillButton.ToolType = ToolType.Fill;
             // 
             // toolPipetteButton
             // 
@@ -398,9 +398,9 @@ namespace SimplePaint
             toolPipetteButton.TabStop = false;
             toolPipetteButton.Text = "Цвет";
             toolTip1.SetToolTip(toolPipetteButton, "Пипетка");
-            toolPipetteButton.ToolType = Tools.Pipette;
+            toolPipetteButton.ToolType = ToolType.Pipette;
             // 
-            // Form1
+            // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -409,8 +409,8 @@ namespace SimplePaint
             Controls.Add(flowLayoutPanel1);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
-            Name = "Form1";
-            Text = "Form1";
+            Name = "MainForm";
+            Text = "SimplePaint";
             Load += Form1_Load;
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
@@ -438,7 +438,7 @@ namespace SimplePaint
         private SplitContainer splitContainer1;
         private ZoomPictureBox mainPictureBox;
         private Button addImageLayer;
-        private ListView listView1;
+        private ListView layersListView;
         private Button removeLayer;
         private Button addLayer;
         private MenuStrip menuStrip1;

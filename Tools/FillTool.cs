@@ -22,7 +22,7 @@ namespace SimplePaint
             int x = newPoint.X, y = newPoint.Y;
             int Width = TargetImage.Width, Height = TargetImage.Height;
 
-            Color newColor = Form1.Instance.ActiveColor;
+            Color newColor = MainForm.Instance.ActiveColor;
             Color oldColor = TargetImage.GetPixel(x, y);
             if (CompareColors(newColor, oldColor))
                 return;

@@ -3,16 +3,16 @@ using System.Drawing.Imaging;
 
 namespace SimplePaint
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
-        public static Form1 Instance { get; private set; }
+        public static MainForm Instance { get; private set; }
         public Canvas Canvas { get; set; }
         public Color ActiveColor { get; private set; } = Color.Black;
 
         private Tool activeTool;
         private EraserTool eraser;
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
 
@@ -26,10 +26,10 @@ namespace SimplePaint
 
                 if (layerIndex >= 0)
                 {
-                    if (listView1.SelectedIndices.Count == 0 || listView1.SelectedIndices[0] != layerIndex)
+                    if (layersListView.SelectedIndices.Count == 0 || layersListView.SelectedIndices[0] != layerIndex)
                     {
-                        listView1.SelectedIndices.Clear();
-                        listView1.SelectedIndices.Add(layerIndex);
+                        layersListView.SelectedIndices.Clear();
+                        layersListView.SelectedIndices.Add(layerIndex);
                     }
                 }
             };
@@ -40,36 +40,36 @@ namespace SimplePaint
             Redraw();
         }
 
-        public void SetTool(Tools tool)
+        public void SetTool(ToolType tool)
         {
             switch (tool)
             {
-                case Tools.None:
+                case ToolType.None:
                     eraser.Deactivate();
                     activeTool?.Deactivate();
                     break;
-                case Tools.Pen:
+                case ToolType.Pen:
                     activeTool = new PenTool(mainPictureBox);
                     break;
-                case Tools.Erase:
+                case ToolType.Erase:
                     eraser.Activate();
                     break;
-                case Tools.Rect:
+                case ToolType.Rect:
                     activeTool = new RectangleTool(mainPictureBox);
                     break;
-                case Tools.RoundedRect:
+                case ToolType.RoundedRect:
                     activeTool = new RoundedRectangleTool(mainPictureBox);
                     break;
-                case Tools.Ellipse:
+                case ToolType.Ellipse:
                     activeTool = new EllipseTool(mainPictureBox);
                     break;
-                case Tools.Line:
+                case ToolType.Line:
                     activeTool = new LineTool(mainPictureBox);
                     break;
-                case Tools.Fill:
+                case ToolType.Fill:
                     activeTool = new FillTool(mainPictureBox);
                     break;
-                case Tools.Pipette:
+                case ToolType.Pipette:
                     activeTool = new PipetteTool(mainPictureBox);
                     break;
                 default:
@@ -107,16 +107,16 @@ namespace SimplePaint
             foreach (var layer in Canvas.Layers)
                 imageList.Images.Add(layer.ResultImage);
 
-            listView1.SmallImageList?.Dispose();
-            listView1.SmallImageList = imageList;
-            listView1.Items.Clear();
+            layersListView.SmallImageList?.Dispose();
+            layersListView.SmallImageList = imageList;
+            layersListView.Items.Clear();
             for (int i = 0; i < Canvas.Layers.Count; i++)
             {
                 var layer = Canvas.Layers[i];
                 var item = new ListViewItem(layer.Name, i);
                 item.Checked = layer.IsEnabled;
 
-                listView1.Items.Add(item);
+                layersListView.Items.Add(item);
             }
         }
 
@@ -148,8 +148,8 @@ namespace SimplePaint
         {
             int index = Canvas.Layers.Count - 1;
 
-            if (listView1.SelectedIndices.Count > 0)
-                index = listView1.SelectedIndices[0];
+            if (layersListView.SelectedIndices.Count > 0)
+                index = layersListView.SelectedIndices[0];
 
             if (Canvas.Layers.Count > 0 && index < Canvas.Layers.Count && index >= 0)
             {
@@ -201,8 +201,8 @@ namespace SimplePaint
 
         private void listView1_ItemActivate(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count > 0)
-                Canvas.SelectLayer(listView1.SelectedItems[0].Index);
+            if (layersListView.SelectedItems.Count > 0)
+                Canvas.SelectLayer(layersListView.SelectedItems[0].Index);
             else
                 Canvas.SelectLayer(-1);
         }

@@ -15,7 +15,7 @@ namespace SimplePaint
             int y = Math.Clamp(newPoint.Y, 0, pictureBox.Height);
 
             Color pickedColor = pictureBox.Image.GetPixel(x, y);
-            Form1.Instance.SetColor(pickedColor);
+            MainForm.Instance.SetColor(pickedColor);
         }
     }
 }

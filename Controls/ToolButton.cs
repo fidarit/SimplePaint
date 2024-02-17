@@ -6,8 +6,8 @@ namespace SimplePaint.Controls
     {
         private static ToolButton activeTool;
 
-        [DefaultValue(Tools.None)]
-        public Tools ToolType { get; set; }
+        [DefaultValue(ToolType.None)]
+        public ToolType ToolType { get; set; }
 
         public Color ActiveColor { get; set; } = Color.FromArgb(60, 114, 196);
 
@@ -42,7 +42,7 @@ namespace SimplePaint.Controls
 
             activeTool = this;
             activeTool.BackColor = ActiveColor;
-            Form1.Instance.SetTool(ToolType);
+            MainForm.Instance.SetTool(ToolType);
         }
     }
 }

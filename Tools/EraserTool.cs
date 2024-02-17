@@ -32,7 +32,7 @@ namespace SimplePaint
         protected override void OnMouseMove(Graphics g)
         {
             Erase(g, prevPoint, newPoint);
-            Form1.Instance.Redraw();
+            MainForm.Instance.Redraw();
         }
 
         protected override void Paint(Graphics g)
