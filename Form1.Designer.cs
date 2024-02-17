@@ -1,4 +1,6 @@
-﻿namespace SimplePaint
+﻿using SimplePaint.Controls;
+
+namespace SimplePaint
 {
     partial class Form1
     {
@@ -434,7 +436,7 @@
         #endregion
 
         private SplitContainer splitContainer1;
-        private SimplePaint.ZoomPictureBox mainPictureBox;
+        private ZoomPictureBox mainPictureBox;
         private Button addImageLayer;
         private ListView listView1;
         private Button removeLayer;

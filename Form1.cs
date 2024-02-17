@@ -4,6 +4,7 @@ using System.Drawing.Imaging;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Windows.Forms;
+using SimplePaint.Controls;
 
 namespace SimplePaint
 {

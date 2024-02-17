@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SimplePaint
+namespace SimplePaint.Controls
 {
     public class ToolButton : PictureBox
     {
@@ -15,7 +15,7 @@ namespace SimplePaint
 
         [DefaultValue(Tools.None)]
         public Tools ToolType { get; set; }
-        
+
         public Color ActiveColor { get; set; } = Color.FromArgb(60, 114, 196);
 
         private Color defaultBackColor;
@@ -32,8 +32,8 @@ namespace SimplePaint
             BackColor = ActiveColor;
         }
 
-        protected override void OnMouseLeave(EventArgs e) 
-        {   
+        protected override void OnMouseLeave(EventArgs e)
+        {
             base.OnMouseLeave(e);
 
             if (activeTool != this)

@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
-namespace SimplePaint
+namespace SimplePaint.Controls
 {
     public class ColorPalette : Control
     {
@@ -134,8 +134,8 @@ namespace SimplePaint
             }
             else
             {
-                float q = luminosity < 0.5f 
-                    ? luminosity * (1 + saturation) 
+                float q = luminosity < 0.5f
+                    ? luminosity * (1 + saturation)
                     : luminosity + saturation - luminosity * saturation;
                 float p = 2 * luminosity - q;
                 float[] rgb = new float[3] { hue + 1 / 3f, hue, hue - 1 / 3f };
