@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using SimplePaint.Controls;
+﻿using SimplePaint.Controls;
 
 namespace SimplePaint
 {
@@ -90,7 +81,7 @@ namespace SimplePaint
             if (layer == null)
                 return;
 
-            if(TargetImage != layer.SourceImage)
+            if (TargetImage != layer.SourceImage)
             {
                 TargetImage = (Bitmap)layer.SourceImage;
                 g?.Dispose();
@@ -115,7 +106,7 @@ namespace SimplePaint
             return new Rectangle(x, y, width, height);
         }
 
-        private void OnMouseDown(object sender, MouseEventArgs e) 
+        private void OnMouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Middle)
                 pictureBox.AllowUserDrag = true;
@@ -146,7 +137,7 @@ namespace SimplePaint
                 }
             }
         }
-        private void OnMouseUp(object sender, MouseEventArgs e) 
+        private void OnMouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Middle)
                 pictureBox.AllowUserDrag = false;
@@ -182,7 +173,7 @@ namespace SimplePaint
                 Paint(e.Graphics);
             }
         }
-        protected virtual void OnMouseDown(Graphics g) {}
+        protected virtual void OnMouseDown(Graphics g) { }
         protected virtual void OnMouseUp(Graphics g) { }
         protected virtual void OnMouseMove(Graphics g) { }
         protected virtual void Paint(Graphics g) { }

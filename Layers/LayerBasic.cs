@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SimplePaint
+﻿namespace SimplePaint
 {
     public abstract class LayerBasic : IDisposable
     {

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Collections.Concurrent;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SimplePaint
 {
@@ -54,7 +48,7 @@ namespace SimplePaint
             if (index >= layers.Count || index < 0)
                 index = layers.Count - 1;
 
-            if(SelectedLayerIndex != index)
+            if (SelectedLayerIndex != index)
             {
                 SelectedLayerIndex = index;
                 SelectedLayerChanged?.Invoke(index);
@@ -151,7 +145,7 @@ namespace SimplePaint
 
                 foreach (var layer in Layers)
                 {
-                    if(layer.IsEnabled)
+                    if (layer.IsEnabled)
                         graphics.DrawImageUnscaled(layer.ResultImage, 0, 0);
                 }
             }
